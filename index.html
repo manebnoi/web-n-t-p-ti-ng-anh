@@ -1,336 +1,692 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
+<html lang="en" class="notranslate" translate="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="google" content="notranslate" />
-  <title>English Tech - Middle School Edition</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root {
-      --primary-cyan: #22d3ee;
-      --primary-indigo: #6366f1;
-      --bg-dark: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.8);
-    }
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber English Master - THCS Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0c29;
+            --primary: #00d2ff;
+            --secondary: #928dab;
+            --accent: #3a7bd5;
+            --neon-purple: #bc13fe;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at center, #1e1b4b, #0f172a);
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none; /* Hạn chế copy để dịch */
-    }
+        * {
+            box-sizing: border-box;
+            user-select: none; /* Ngăn bôi đen để copy */
+        }
 
-    .container {
-      width: 90%;
-      max-width: 800px;
-      margin-top: 30px;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    h1 {
-      text-align: center;
-      color: var(--primary-cyan);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
-    }
+        /* Tech Background Elements */
+        .bg-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(68, 11, 168, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 210, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
 
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3);
+            position: relative;
+            text-align: center;
+        }
 
-    /* Form & Input */
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      background: #020617;
-      color: white;
-      box-sizing: border-box;
-    }
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary);
+            margin-bottom: 20px;
+        }
 
-    button {
-      width: 100%;
-      padding: 15px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(90deg, var(--primary-cyan), var(--primary-indigo));
-      color: #020617;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+        /* Buttons */
+        .btn {
+            background: linear-gradient(90deg, var(--accent), var(--neon-purple));
+            border: none;
+            padding: 12px 30px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: 0.3s;
+            box-shadow: 0 0 15px var(--accent);
+            margin: 10px;
+        }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-    }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--neon-purple);
+        }
 
-    /* Game UI */
-    .stats-bar {
-      display: flex;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px 20px;
-      border-radius: 50px;
-      margin-bottom: 20px;
-      font-weight: bold;
-      border: 1px solid var(--primary-cyan);
-    }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            box-shadow: none;
+            border: 1px solid var(--primary);
+        }
 
-    .question-box { margin-bottom: 20px; }
-    .section-label { color: var(--primary-cyan); font-size: 0.9rem; }
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .screen.active {
+            display: block;
+        }
 
-    .choice {
-      background: #334155;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .choice:hover { background: #475569; border-left: 5px solid var(--primary-cyan); }
+        /* Inputs */
+        input {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            margin: 10px 0;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        input:focus {
+            box-shadow: 0 0 10px var(--primary);
+        }
 
-    .hidden { display: none; }
+        /* HUD */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            border-bottom: 2px solid var(--primary);
+        }
 
-    #leaderboard-list {
-      list-style: none;
-      padding: 0;
-    }
+        .timer { color: #ff4757; }
+        .score { color: #2ed573; }
+        .gems { color: #ffa502; }
 
-    #leaderboard-list li {
-      background: rgba(255, 255, 255, 0.05);
-      margin: 5px 0;
-      padding: 10px;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-    }
+        /* Question Area */
+        .question-box {
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
 
-    .gem-icon { color: #facc15; }
-  </style>
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--secondary);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .option-card:hover {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        /* Scramble Words */
+        .word-bank, .sentence-drop {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 50px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        
+        .draggable-word {
+            background: var(--accent);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Leaderboard */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th { color: var(--primary); }
+
+        /* Controls */
+        .music-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 1px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        /* Feedback */
+        .feedback {
+            font-size: 1.2rem;
+            height: 30px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct { color: #2ed573; text-shadow: 0 0 10px #2ed573; }
+        .wrong { color: #ff4757; text-shadow: 0 0 10px #ff4757; }
+
+    </style>
 </head>
-<body translate="no">
+<body>
 
-  <audio id="bgMusic" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
-  </audio>
+    <div class="bg-particles"></div>
+    <button class="music-toggle" onclick="toggleMusic()">🎵</button>
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=cyberpunk-2099-10510.mp3" type="audio/mpeg">
+    </audio>
 
-  <div class="container">
-    <h1>TECH ENGLISH</h1>
+    <div class="container">
+        
+        <div id="login-screen" class="screen active">
+            <h1>Cyber English Master</h1>
+            <p>Phiên bản ôn tập THCS (Lớp 6-9)</p>
+            <input type="text" id="username" placeholder="Nhập Họ và Tên" autocomplete="off">
+            <input type="text" id="userclass" placeholder="Nhập Lớp (Ví dụ: 8A)" autocomplete="off">
+            <br>
+            <button class="btn" onclick="checkLogin()">START MISSION</button>
+            <br>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">Bảng Xếp Hạng</button>
+        </div>
 
-    <div id="login-screen" class="card">
-      <h2 style="text-align: center;">Ready to Start?</h2>
-      <input type="text" id="player-name" placeholder="Full Name..." required>
-      <input type="text" id="player-class" placeholder="Class (e.g., 8A1)..." required>
-      <button onclick="initGame()">Login & Play</button>
-      <button style="background: #475569; color: white;" onclick="toggleMusic()">🎵 Toggle Music</button>
+        <div id="game-screen" class="screen">
+            <div class="hud">
+                <div class="timer">⏰ <span id="time-display">25:00</span></div>
+                <div>Level: <span id="level-display">1</span> | Q: <span id="q-num">1</span>/20</div>
+                <div class="score">⭐ <span id="score-display">0</span></div>
+                <div class="gems">💎 <span id="gem-display">0</span></div>
+            </div>
+
+            <div class="question-container">
+                <h3 id="question-type-title" style="color:var(--secondary)">Type</h3>
+                <div class="question-box" id="question-text">
+                    Loading question...
+                </div>
+
+                <div id="interaction-area"></div>
+                
+                <div class="feedback" id="feedback-msg"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h2>Mission Complete!</h2>
+            <p>Điểm số: <span id="final-score">0</span></p>
+            <p>Đá quý nhận được: <span id="final-gems">0</span> 💎</p>
+            <div id="reward-msg" style="color: var(--primary); margin: 20px 0; font-weight: bold;"></div>
+            <button class="btn" onclick="nextLevel()">Cấp độ tiếp theo</button>
+            <button class="btn btn-secondary" onclick="resetGame()">Về trang chủ</button>
+        </div>
+
+        <div id="leaderboard-screen" class="screen">
+            <h2>Hall of Fame</h2>
+            <table id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn" onclick="showLogin()">Quay lại</button>
+        </div>
+
     </div>
 
-    <div id="game-screen" class="card hidden">
-      <div class="stats-bar">
-        <span>🕒 <span id="timer">15:00</span></span>
-        <span>⭐ <span id="score">0</span></span>
-        <span>💎 <span id="gems">0</span></span>
-      </div>
-      
-      <div class="question-box">
-        <div class="section-label" id="section-name">SECTION</div>
-        <h3 id="question-text">Question loading...</h3>
-        <div id="options-container"></div>
-      </div>
-      <div style="text-align: right; font-size: 0.8rem; opacity: 0.7;">
-        Progress: <span id="progress">1</span>/20 (Level <span id="level-num">1</span>)
-      </div>
-    </div>
+    <script>
+        // --- DATABASE CÂU HỎI (Mẫu khoảng 30 câu, bạn có thể copy paste thêm để đủ 250 câu) ---
+        // Types: 'mcq' (Trắc nghiệm), 'scramble' (Ghép từ), 'error' (Tìm lỗi), 'rewrite' (Sửa câu)
+        // Level: 1 (Dễ), 2 (Trung bình), 3 (Khó) - Ở đây ta gộp chung pool để random.
+        
+        const questionBank = [
+            // --- PART 1: MULTIPLE CHOICE (Chọn đáp án đúng) ---
+            { type: 'mcq', q: "He ______ to school by bus everyday.", options: ["go", "goes", "went", "going"], a: "goes" },
+            { type: 'mcq', q: "She ______ cooking dinner right now.", options: ["is", "are", "am", "be"], a: "is" },
+            { type: 'mcq', q: "We have lived here ______ 2010.", options: ["since", "for", "in", "at"], a: "since" },
+            { type: 'mcq', q: "If it rains, I ______ at home.", options: ["stay", "stayed", "will stay", "would stay"], a: "will stay" },
+            { type: 'mcq', q: "My father enjoys ______ newspapers in the morning.", options: ["read", "reading", "to read", "reads"], a: "reading" },
+            { type: 'mcq', q: "This is the ______ book I have ever read.", options: ["interesting", "more interesting", "most interesting", "as interesting"], a: "most interesting" },
+            { type: 'mcq', q: "Lan speaks English very ______.", options: ["good", "well", "bad", "nice"], a: "well" },
+            
+            // --- PART 2: WORD SCRAMBLE (Ghép từ) ---
+            { type: 'scramble', q: "Arrange: name / is / My / John", a: "My name is John" },
+            { type: 'scramble', q: "Arrange: like / play / soccer / I / to", a: "I like to play soccer" },
+            { type: 'scramble', q: "Arrange: beautiful / She / a / girl / is", a: "She is a beautiful girl" },
+            { type: 'scramble', q: "Arrange: you / Where / from / come / do / ?", a: "Where do you come from ?" },
+            { type: 'scramble', q: "Arrange: not / did / yesterday / go / He / school / to", a: "He did not go to school yesterday" },
+            { type: 'scramble', q: "Arrange: watching / They / TV / now / are", a: "They are watching TV now" },
+            
+            // --- PART 3: FIND ERROR (Tìm lỗi sai) ---
+            // Format options: [A, B, C, D] tương ứng với các phần gạch chân.
+            // Hiển thị: "She (A)go to (B)school (C)by bus (D)yesterday."
+            { type: 'error', q: "She (A)go to (B)school (C)by bus (D)yesterday.", parts: ["go", "school", "by bus", "yesterday"], a: "go", full: "She <u>go</u> to school by bus yesterday." },
+            { type: 'error', q: "My brother (A)enjoy (B)playing (C)football (D)very much.", parts: ["enjoy", "playing", "football", "very much"], a: "enjoy", full: "My brother <u>enjoy</u> playing football very much." },
+            { type: 'error', q: "How (A)many (B)rice (C)do you (D)want?", parts: ["many", "rice", "do you", "want"], a: "many", full: "How <u>many</u> rice do you want?" },
+            { type: 'error', q: "(A)Because the rain, (B)we (C)stayed (D)at home.", parts: ["Because", "we", "stayed", "at home"], a: "Because", full: "<u>Because</u> the rain, we stayed at home." },
+            { type: 'error', q: "He (A)is (B)the (C)taller student (D)in the class.", parts: ["is", "the", "taller", "in the class"], a: "taller", full: "He is the <u>taller</u> student in the class." },
+            
+            // --- PART 4: SENTENCE CORRECTION/REWRITE (Sửa câu/Chọn câu đúng nghĩa) ---
+            { type: 'rewrite', q: "Wrong: 'He don't likes apples.' - Choose the correct sentence:", options: ["He doesn't like apples.", "He not like apples.", "He didn't likes apples.", "He don't like apples."], a: "He doesn't like apples." },
+            { type: 'rewrite', q: "Meaning: 'I usually go to school at 7am.' - Rewrite using 'My class...'", options: ["My class usually start at 7am.", "My class usually starts at 7am.", "My class is starting at 7am.", "My class usually started at 7am."], a: "My class usually starts at 7am." },
+            { type: 'rewrite', q: "Wrong: 'She plays piano very good.' - Fix the error:", options: ["She plays piano very well.", "She plays piano very bad.", "She play piano very good.", "She playing piano very good."], a: "She plays piano very well." },
+            { type: 'rewrite', q: "Meaning: 'Unless you study, you will fail.' - Rewrite using 'If...'", options: ["If you don't study, you will fail.", "If you study, you will fail.", "If you not study, you will fail.", "If you study, you won't fail."], a: "If you don't study, you will fail." },
+            { type: 'rewrite', q: "Wrong: 'This house is builded in 1990.' - Fix the error:", options: ["This house was built in 1990.", "This house is built in 1990.", "This house was build in 1990.", "This house build in 1990."], a: "This house was built in 1990." },
+             // ... Bạn có thể thêm hàng trăm câu hỏi vào mảng này theo mẫu trên.
+        ];
 
-    <div id="result-screen" class="card hidden">
-      <h2 style="text-align: center; color: var(--primary-cyan);">MISSION COMPLETE! 🏆</h2>
-      <div style="text-align: center; font-size: 1.2rem;">
-        <p>Player: <span id="res-name"></span></p>
-        <p>Total Score: <span id="res-score"></span></p>
-        <p>Gems Earned: <span id="res-gems" class="gem-icon"></span> 💎</p>
-      </div>
-      <button onclick="location.reload()">Play New Round</button>
-    </div>
+        // --- GAME VARIABLES ---
+        let currentUser = { name: "", class: "" };
+        let currentLevel = 1;
+        let score = 0;
+        let gems = 0;
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let timerInterval;
+        let timeLeft = 1500; // 25 phút = 1500 giây
+        let isMusicPlaying = false;
+        let audio = document.getElementById("bgMusic");
 
-    <div class="card" style="margin-top: 20px;">
-      <h3 style="margin-top: 0; color: var(--primary-cyan);">🏆 Leaderboard</h3>
-      <ul id="leaderboard-list"></ul>
-    </div>
-  </div>
+        // --- SYSTEM FUNCTIONS ---
 
-<script>
-/* DATABASE MÔ PHỎNG (Học sinh THCS)
-   Trong thực tế, 1000 câu sẽ được tải từ file JSON bên ngoài.
-   Ở đây tôi tạo hàm generate ngẫu nhiên dựa trên cấu trúc yêu cầu.
-*/
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                audio.pause();
+                document.querySelector('.music-toggle').innerHTML = '🔇';
+                document.querySelector('.music-toggle').style.borderColor = '#ff4757';
+            } else {
+                audio.play().catch(e => console.log("Audio play failed interaction needed"));
+                document.querySelector('.music-toggle').innerHTML = '🎵';
+                document.querySelector('.music-toggle').style.borderColor = '#2ed573';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
 
-const SECTION_NAMES = [
-  "Word Arrangement (Sắp xếp từ)",
-  "Multiple Choice (Chọn đáp án đúng)",
-  "Error Identification (Tìm lỗi sai)",
-  "Sentence Correction (Sửa câu)"
-];
+        function switchScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
 
-let database = [];
-function createDatabase() {
-  for(let s=0; s<4; s++) {
-    for(let i=0; i<250; i++) {
-      database.push({
-        id: s * 250 + i,
-        section: SECTION_NAMES[s],
-        question: `[Level ${s+1}] Grade 6-9 English Challenge Question #${i+1}?`,
-        options: ["Correct Answer Option", "Wrong Option B", "Wrong Option C", "Wrong Option D"],
-        answer: 0 // Vị trí 0 luôn đúng trong database này (sẽ trộn khi hiển thị)
-      });
-    }
-  }
-}
+        function checkLogin() {
+            const name = document.getElementById('username').value.trim();
+            const cls = document.getElementById('userclass').value.trim();
+            if (name && cls) {
+                currentUser.name = name;
+                currentUser.class = cls;
+                startGame();
+            } else {
+                alert("Vui lòng nhập đầy đủ Họ tên và Lớp!");
+            }
+        }
 
-// Game State
-let currentPlayer = { name: "", class: "", score: 0, gems: 0 };
-let currentSessionQuestions = [];
-let currentIndex = 0;
-let timeRemaining = 1500; // 15 phút
-let gameInterval;
+        function showLogin() { switchScreen('login-screen'); }
 
-function initGame() {
-  const name = document.getElementById('player-name').value;
-  const cls = document.getElementById('player-class').value;
-  if(!name || !cls) return alert("Please enter info!");
+        function showLeaderboard() {
+            switchScreen('leaderboard-screen');
+            updateLeaderboardTable();
+        }
 
-  currentPlayer.name = name;
-  currentPlayer.class = cls;
-  
-  createDatabase();
-  // Chọn ngẫu nhiên 20 câu mỗi lần chơi
-  currentSessionQuestions = database.sort(() => 0.5 - Math.random()).slice(0, 20);
-  
-  document.getElementById('login-screen').classList.add('hidden');
-  document.getElementById('game-screen').classList.remove('hidden');
-  
-  startTimer();
-  loadQuestion();
-}
+        function updateLeaderboardTable() {
+            const tbody = document.querySelector('#leaderboard-table tbody');
+            tbody.innerHTML = '';
+            let data = JSON.parse(localStorage.getItem('cyberEnglish_leaderboard')) || [];
+            data.sort((a, b) => b.score - a.score);
+            
+            data.slice(0, 10).forEach((p, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${p.name}</td>
+                    <td>${p.class}</td>
+                    <td>${p.score}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
-function loadQuestion() {
-  const q = currentSessionQuestions[currentIndex];
-  document.getElementById('section-name').textContent = q.section;
-  document.getElementById('question-text').textContent = q.question;
-  document.getElementById('progress').textContent = currentIndex + 1;
-  document.getElementById('level-num').textContent = Math.floor(currentIndex / 5) + 1;
+        function saveScore() {
+            let data = JSON.parse(localStorage.getItem('cyberEnglish_leaderboard')) || [];
+            data.push({
+                name: currentUser.name,
+                class: currentUser.class,
+                score: score,
+                timestamp: new Date().getTime()
+            });
+            localStorage.setItem('cyberEnglish_leaderboard', JSON.stringify(data));
+        }
 
-  const container = document.getElementById('options-container');
-  container.innerHTML = '';
+        // --- GAMEPLAY LOGIC ---
 
-  // Trộn đáp án
-  let choices = [...q.options];
-  let correctText = choices[q.answer];
-  choices = choices.sort(() => 0.5 - Math.random());
+        function startGame() {
+            score = 0;
+            currentLevel = 1;
+            gems = 0;
+            document.getElementById('score-display').innerText = score;
+            document.getElementById('gem-display').innerText = gems;
+            startLevel();
+        }
 
-  choices.forEach(text => {
-    const div = document.createElement('div');
-    div.className = 'choice';
-    div.textContent = text;
-    div.onclick = () => checkAnswer(text === correctText);
-    container.appendChild(div);
-  });
-}
+        function startLevel() {
+            switchScreen('game-screen');
+            document.getElementById('level-display').innerText = currentLevel;
+            timeLeft = 1500; // Reset 25 phút
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Hết giờ! Bạn phải làm lại bộ câu hỏi mới.");
+                    startLevel(); // Restart level
+                }
+            }, 1000);
 
-function checkAnswer(isCorrect) {
-  if(isCorrect) {
-    currentPlayer.score += 50;
-    currentPlayer.gems += 2;
-    currentIndex++;
-    if(currentIndex >= currentSessionQuestions.length) {
-      endGame();
-    } else {
-      loadQuestion();
-    }
-  } else {
-    alert("Wrong! You get a different question to try again.");
-    // Đổi câu hỏi hiện tại bằng một câu ngẫu nhiên khác từ database
-    currentSessionQuestions[currentIndex] = database[Math.floor(Math.random()*database.length)];
-    loadQuestion();
-  }
-  updateStats();
-}
+            // Chọn 20 câu hỏi ngẫu nhiên chia đều 4 phần (5 câu mỗi loại)
+            generateLevelQuestions();
+            currentQuestionIndex = 0;
+            loadQuestion();
+        }
 
-function updateStats() {
-  document.getElementById('score').textContent = currentPlayer.score;
-  document.getElementById('gems').textContent = currentPlayer.gems;
-}
+        function generateLevelQuestions() {
+            // Lọc câu hỏi theo loại
+            const mcqs = questionBank.filter(q => q.type === 'mcq');
+            const scrambles = questionBank.filter(q => q.type === 'scramble');
+            const errors = questionBank.filter(q => q.type === 'error');
+            const rewrites = questionBank.filter(q => q.type === 'rewrite');
 
-function startTimer() {
-  gameInterval = setInterval(() => {
-    timeRemaining--;
-    let mins = Math.floor(timeRemaining / 60);
-    let secs = timeRemaining % 60;
-    document.getElementById('timer').textContent = 
-      `${mins}:${secs.toString().padStart(2, '0')}`;
+            // Hàm shuffle và lấy 5 câu
+            const getRandom = (arr, num) => {
+                const shuffled = [...arr].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, num);
+            };
 
-    if(timeRemaining <= 0) {
-      clearInterval(gameInterval);
-      alert("Time is up! Let's try a new set.");
-      location.reload();
-    }
-  }, 1000);
-}
+            // Đảm bảo đủ câu hỏi (nếu không đủ thì lấy hết những gì có)
+            let selected = [
+                ...getRandom(mcqs, 5),
+                ...getRandom(scrambles, 5),
+                ...getRandom(errors, 5),
+                ...getRandom(rewrites, 5)
+            ];
 
-function endGame() {
-  clearInterval(gameInterval);
-  document.getElementById('game-screen').classList.add('hidden');
-  document.getElementById('result-screen').classList.remove('hidden');
-  
-  document.getElementById('res-name').textContent = currentPlayer.name;
-  document.getElementById('res-score').textContent = currentPlayer.score;
-  document.getElementById('res-gems').textContent = currentPlayer.gems;
+            // Trộn lại thứ tự câu hỏi trong màn chơi
+            currentQuestions = selected.sort(() => 0.5 - Math.random());
+        }
 
-  saveLeaderboard();
-}
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('time-display').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        }
 
-function saveLeaderboard() {
-  let board = JSON.parse(localStorage.getItem('eng_leaderboard') || '[]');
-  board.push({name: currentPlayer.name, score: currentPlayer.score, class: currentPlayer.class});
-  board.sort((a, b) => b.score - a.score);
-  board = board.slice(0, 5); // Giữ top 5
-  localStorage.setItem('eng_leaderboard', JSON.stringify(board));
-  displayLeaderboard();
-}
+        function loadQuestion() {
+            document.getElementById('q-num').innerText = currentQuestionIndex + 1;
+            const q = currentQuestions[currentQuestionIndex];
+            const typeTitle = document.getElementById('question-type-title');
+            const qText = document.getElementById('question-text');
+            const area = document.getElementById('interaction-area');
+            const feedback = document.getElementById('feedback-msg');
+            
+            feedback.innerText = "";
+            feedback.className = "feedback";
+            area.innerHTML = "";
 
-function displayLeaderboard() {
-  const board = JSON.parse(localStorage.getItem('eng_leaderboard') || '[]');
-  const list = document.getElementById('leaderboard-list');
-  list.innerHTML = board.map(item => 
-    `<li><span>${item.name} (${item.class})</span> <b>${item.score} pts</b></li>`
-  ).join('');
-}
+            // Render dựa trên loại câu hỏi
+            if (q.type === 'mcq') {
+                typeTitle.innerText = "MULTIPLE CHOICE (Chọn đáp án đúng)";
+                qText.innerText = q.q;
+                let grid = document.createElement('div');
+                grid.className = 'options-grid';
+                // Shuffle options
+                let opts = [...q.options].sort(() => 0.5 - Math.random());
+                opts.forEach(opt => {
+                    let btn = document.createElement('div');
+                    btn.className = 'option-card';
+                    btn.innerText = opt;
+                    btn.onclick = () => handleAnswer(opt, q.a);
+                    grid.appendChild(btn);
+                });
+                area.appendChild(grid);
 
-function toggleMusic() {
-  const audio = document.getElementById('bgMusic');
-  if (audio.paused) audio.play();
-  else audio.pause();
-}
+            } else if (q.type === 'rewrite') {
+                typeTitle.innerText = "SENTENCE CORRECTION (Chọn câu đúng)";
+                qText.innerText = q.q;
+                let grid = document.createElement('div');
+                grid.className = 'options-grid';
+                let opts = [...q.options].sort(() => 0.5 - Math.random());
+                opts.forEach(opt => {
+                    let btn = document.createElement('div');
+                    btn.className = 'option-card';
+                    btn.innerText = opt;
+                    btn.onclick = () => handleAnswer(opt, q.a);
+                    grid.appendChild(btn);
+                });
+                area.appendChild(grid);
 
-// Chặn chuột phải (hạn chế công cụ dịch)
-document.addEventListener('contextmenu', event => event.preventDefault());
+            } else if (q.type === 'scramble') {
+                typeTitle.innerText = "WORD SCRAMBLE (Ghép từ thành câu)";
+                qText.innerText = "Sắp xếp các từ sau:";
+                
+                // Logic ghép từ
+                let words = q.q.replace("Arrange: ", "").split(" / ");
+                // Shuffle words
+                words.sort(() => 0.5 - Math.random());
 
-displayLeaderboard();
-</script>
+                let bank = document.createElement('div');
+                bank.className = 'word-bank';
+                let dropZone = document.createElement('div');
+                dropZone.className = 'sentence-drop';
+                dropZone.style.border = "2px dashed var(--secondary)";
+                dropZone.style.minHeight = "60px";
+
+                let currentSentence = [];
+
+                words.forEach(w => {
+                    let sp = document.createElement('span');
+                    sp.className = 'draggable-word';
+                    sp.innerText = w;
+                    sp.onclick = function() {
+                        // Move to drop zone
+                        dropZone.appendChild(this);
+                        currentSentence.push(w);
+                        checkScramble();
+                    };
+                    bank.appendChild(sp);
+                });
+
+                // Reset button for scramble
+                let resetBtn = document.createElement('button');
+                resetBtn.className = 'btn btn-secondary';
+                resetBtn.innerText = "Reset";
+                resetBtn.style.fontSize = "0.8rem";
+                resetBtn.onclick = () => loadQuestion(); // Reload lại câu này
+
+                area.appendChild(dropZone);
+                area.appendChild(bank);
+                area.appendChild(resetBtn);
+
+                function checkScramble() {
+                    let constructed = Array.from(dropZone.children).map(c => c.innerText).join(" ");
+                    if (dropZone.children.length === words.length) {
+                        handleAnswer(constructed, q.a);
+                    }
+                }
+
+            } else if (q.type === 'error') {
+                typeTitle.innerText = "FIND ERROR (Tìm lỗi sai)";
+                qText.innerHTML = q.full; // Hiển thị câu đầy đủ nhưng user phải chọn phần sai
+                qText.style.fontStyle = "italic";
+                
+                let instruction = document.createElement('p');
+                instruction.innerText = "Chọn phần bị sai:";
+                area.appendChild(instruction);
+
+                let grid = document.createElement('div');
+                grid.className = 'options-grid';
+                q.parts.forEach(part => {
+                    let btn = document.createElement('div');
+                    btn.className = 'option-card';
+                    btn.innerText = part;
+                    btn.onclick = () => handleAnswer(part, q.a);
+                    grid.appendChild(btn);
+                });
+                area.appendChild(grid);
+            }
+        }
+
+        function handleAnswer(userAns, correctAns) {
+            const feedback = document.getElementById('feedback-msg');
+            
+            // Normalize strings for comparison
+            if (userAns.trim() === correctAns.trim()) {
+                // ĐÚNG
+                feedback.innerText = "CHÍNH XÁC! +10 Points";
+                feedback.classList.add("correct");
+                score += 10;
+                document.getElementById('score-display').innerText = score;
+                
+                // Âm thanh đúng (nếu có thể thêm)
+                
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1000);
+            } else {
+                // SAI
+                feedback.innerText = "SAI RỒI! Đang đổi câu hỏi khác...";
+                feedback.classList.add("wrong");
+                
+                // Trừ thời gian phạt (tuỳ chọn)
+                timeLeft -= 10; 
+                
+                setTimeout(() => {
+                    replaceQuestion();
+                }, 1500);
+            }
+        }
+
+        function replaceQuestion() {
+            // Logic: Lấy 1 câu khác cùng loại từ ngân hàng câu hỏi thay thế vào vị trí hiện tại
+            const currentType = currentQuestions[currentQuestionIndex].type;
+            const pool = questionBank.filter(q => q.type === currentType);
+            
+            // Chọn ngẫu nhiên 1 câu khác câu hiện tại
+            let newQ;
+            let attempts = 0;
+            do {
+                newQ = pool[Math.floor(Math.random() * pool.length)];
+                attempts++;
+            } while (newQ === currentQuestions[currentQuestionIndex] && attempts < 10);
+
+            currentQuestions[currentQuestionIndex] = newQ;
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= currentQuestions.length) {
+                levelComplete();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function levelComplete() {
+            clearInterval(timerInterval);
+            switchScreen('result-screen');
+            document.getElementById('final-score').innerText = score;
+            
+            // Phần thưởng
+            let earnedGems = Math.floor(score / 5);
+            gems += earnedGems;
+            document.getElementById('final-gems').innerText = earnedGems;
+            document.getElementById('gem-display').innerText = gems;
+
+            let msg = document.getElementById('reward-msg');
+            if (score >= 200) {
+                msg.innerText = "Xuất sắc! Bạn nhận được huy hiệu 'Cyber Master'!";
+            } else {
+                msg.innerText = "Làm tốt lắm! Cố gắng hơn ở màn sau.";
+            }
+            
+            saveScore();
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            startLevel();
+        }
+
+        function resetGame() {
+            switchScreen('login-screen');
+        }
+
+    </script>
 </body>
 </html>
