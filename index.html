@@ -1,228 +1,336 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <title>English Quiz Master — Tech Edition</title>
+  <meta name="google" content="notranslate" />
+  <title>English Tech - Middle School Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    :root {
+      --primary-cyan: #22d3ee;
+      --primary-indigo: #6366f1;
+      --bg-dark: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.8);
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #312e81);
-      color: #e5e7eb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #1e1b4b, #0f172a);
+      color: #f8fafc;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none; /* Hạn chế copy để dịch */
     }
+
     .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      margin-top: 30px;
     }
-    h1, h2 {
+
+    h1 {
       text-align: center;
-      color: #22d3ee;
+      color: var(--primary-cyan);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
     }
+
     .card {
-      background: rgba(15, 23, 42, 0.9);
-      border-radius: 14px;
-      padding: 20px;
-      margin-top: 20px;
-      box-shadow: 0 0 25px rgba(34, 211, 238, 0.15);
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
-    input, button {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
+
+    /* Form & Input */
     input {
       width: 100%;
-      margin-bottom: 12px;
-    }
-    button {
-      background: linear-gradient(90deg, #22d3ee, #6366f1);
-      color: #020617;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover { opacity: 0.9; }
-    .choice {
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #334155;
       background: #020617;
-      cursor: pointer;
+      color: white;
+      box-sizing: border-box;
     }
-    .choice:hover { background: #1e293b; }
-    .topbar {
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary-cyan), var(--primary-indigo));
+      color: #020617;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Game UI */
+    .stats-bar {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 20px;
+      border-radius: 50px;
+      margin-bottom: 20px;
       font-weight: bold;
+      border: 1px solid var(--primary-cyan);
     }
+
+    .question-box { margin-bottom: 20px; }
+    .section-label { color: var(--primary-cyan); font-size: 0.9rem; }
+
+    .choice {
+      background: #334155;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .choice:hover { background: #475569; border-left: 5px solid var(--primary-cyan); }
+
     .hidden { display: none; }
+
+    #leaderboard-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    #leaderboard-list li {
+      background: rgba(255, 255, 255, 0.05);
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .gem-icon { color: #facc15; }
   </style>
 </head>
-<body>
-  <audio id="bgm" loop src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_aeef7a7b7c.mp3"></audio>
+<body translate="no">
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+  </audio>
 
   <div class="container">
-    <h1>English Quiz Master — PRO</h1>
+    <h1>TECH ENGLISH</h1>
 
-    <!-- LOGIN -->
-    <div class="card" id="login">
-      <h2>Player Information</h2>
-      <input id="name" placeholder="Full Name" />
-      <input id="class" placeholder="Class" />
-      <button onclick="startGame()">Start Game</button>
-      <br><br>
-      <button onclick="toggleMusic()">Music ON / OFF</button>
+    <div id="login-screen" class="card">
+      <h2 style="text-align: center;">Ready to Start?</h2>
+      <input type="text" id="player-name" placeholder="Full Name..." required>
+      <input type="text" id="player-class" placeholder="Class (e.g., 8A1)..." required>
+      <button onclick="initGame()">Login & Play</button>
+      <button style="background: #475569; color: white;" onclick="toggleMusic()">🎵 Toggle Music</button>
     </div>
 
-    <!-- GAME -->
-    <div class="card hidden" id="game">
-      <div class="topbar">
-        <div>Score: <span id="score">0</span></div>
-        <div>Time: <span id="time">25:00</span></div>
-        <div>Gems: <span id="gems">0</span></div>
+    <div id="game-screen" class="card hidden">
+      <div class="stats-bar">
+        <span>🕒 <span id="timer">25:00</span></span>
+        <span>⭐ <span id="score">0</span></span>
+        <span>💎 <span id="gems">0</span></span>
       </div>
-      <h2 id="sectionTitle"></h2>
-      <p id="question"></p>
-      <div id="choices"></div>
+      
+      <div class="question-box">
+        <div class="section-label" id="section-name">SECTION</div>
+        <h3 id="question-text">Question loading...</h3>
+        <div id="options-container"></div>
+      </div>
+      <div style="text-align: right; font-size: 0.8rem; opacity: 0.7;">
+        Progress: <span id="progress">1</span>/20 (Level <span id="level-num">1</span>)
+      </div>
     </div>
 
-    <!-- RESULT -->
-    <div class="card hidden" id="result">
-      <h2>Congratulations 🎉</h2>
-      <p>You finished all levels!</p>
-      <p>Total Score: <span id="finalScore"></span></p>
-      <p>Total Gems: <span id="finalGems"></span> 💎</p>
-      <button onclick="location.reload()">Play Again</button>
+    <div id="result-screen" class="card hidden">
+      <h2 style="text-align: center; color: var(--primary-cyan);">MISSION COMPLETE! 🏆</h2>
+      <div style="text-align: center; font-size: 1.2rem;">
+        <p>Player: <span id="res-name"></span></p>
+        <p>Total Score: <span id="res-score"></span></p>
+        <p>Gems Earned: <span id="res-gems" class="gem-icon"></span> 💎</p>
+      </div>
+      <button onclick="location.reload()">Play New Round</button>
     </div>
 
-    <!-- LEADERBOARD -->
-    <div class="card">
-      <h2>Leaderboard</h2>
-      <ol id="leaderboard"></ol>
+    <div class="card" style="margin-top: 20px;">
+      <h3 style="margin-top: 0; color: var(--primary-cyan);">🏆 Leaderboard</h3>
+      <ul id="leaderboard-list"></ul>
     </div>
   </div>
 
 <script>
-/* ===== QUESTION GENERATOR (1000+) ===== */
-const sections = [
-  "Word Arrangement",
-  "Choose the Correct Answer",
-  "Find the Mistake",
-  "Sentence Correction"
+/* DATABASE MÔ PHỎNG (Học sinh THCS)
+   Trong thực tế, 1000 câu sẽ được tải từ file JSON bên ngoài.
+   Ở đây tôi tạo hàm generate ngẫu nhiên dựa trên cấu trúc yêu cầu.
+*/
+
+const SECTION_NAMES = [
+  "Word Arrangement (Sắp xếp từ)",
+  "Multiple Choice (Chọn đáp án đúng)",
+  "Error Identification (Tìm lỗi sai)",
+  "Sentence Correction (Sửa câu)"
 ];
 
-function generateQuestions() {
-  const all = [];
-  for (let s = 0; s < 4; s++) {
-    for (let i = 1; i <= 250; i++) {
-      all.push({
-        section: s,
-        q: `Question ${i} of ${sections[s]}`,
-        choices: ["A", "B", "C", "D"],
-        answer: Math.floor(Math.random() * 4)
+let database = [];
+function createDatabase() {
+  for(let s=0; s<4; s++) {
+    for(let i=0; i<250; i++) {
+      database.push({
+        id: s * 250 + i,
+        section: SECTION_NAMES[s],
+        question: `[Level ${s+1}] Grade 6-9 English Challenge Question #${i+1}?`,
+        options: ["Correct Answer Option", "Wrong Option B", "Wrong Option C", "Wrong Option D"],
+        answer: 0 // Vị trí 0 luôn đúng trong database này (sẽ trộn khi hiển thị)
       });
     }
   }
-  return all;
 }
 
-let questions = generateQuestions().sort(() => Math.random() - 0.5);
-let index = 0;
-let score = 0;
-let gems = 0;
-let timer;
-let timeLeft = 1500;
+// Game State
+let currentPlayer = { name: "", class: "", score: 0, gems: 0 };
+let currentSessionQuestions = [];
+let currentIndex = 0;
+let timeRemaining = 1500; // 25 phút
+let gameInterval;
 
-function startGame() {
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("game").classList.remove("hidden");
-  document.getElementById("bgm").play();
+function initGame() {
+  const name = document.getElementById('player-name').value;
+  const cls = document.getElementById('player-class').value;
+  if(!name || !cls) return alert("Please enter info!");
+
+  currentPlayer.name = name;
+  currentPlayer.class = cls;
+  
+  createDatabase();
+  // Chọn ngẫu nhiên 20 câu mỗi lần chơi
+  currentSessionQuestions = database.sort(() => 0.5 - Math.random()).slice(0, 20);
+  
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.remove('hidden');
+  
   startTimer();
-  showQuestion();
+  loadQuestion();
 }
 
-function showQuestion() {
-  const q = questions[index];
-  document.getElementById("sectionTitle").textContent = sections[q.section];
-  document.getElementById("question").textContent = q.q;
-  const ctn = document.getElementById("choices");
-  ctn.innerHTML = "";
-  q.choices.forEach((c, i) => {
-    const div = document.createElement("div");
-    div.className = "choice";
-    div.textContent = c;
-    div.onclick = () => selectAnswer(i);
-    ctn.appendChild(div);
+function loadQuestion() {
+  const q = currentSessionQuestions[currentIndex];
+  document.getElementById('section-name').textContent = q.section;
+  document.getElementById('question-text').textContent = q.question;
+  document.getElementById('progress').textContent = currentIndex + 1;
+  document.getElementById('level-num').textContent = Math.floor(currentIndex / 5) + 1;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  // Trộn đáp án
+  let choices = [...q.options];
+  let correctText = choices[q.answer];
+  choices = choices.sort(() => 0.5 - Math.random());
+
+  choices.forEach(text => {
+    const div = document.createElement('div');
+    div.className = 'choice';
+    div.textContent = text;
+    div.onclick = () => checkAnswer(text === correctText);
+    container.appendChild(div);
   });
 }
 
-function selectAnswer(i) {
-  if (i === questions[index].answer) {
-    score += 10;
-    gems += 1;
-    index++;
+function checkAnswer(isCorrect) {
+  if(isCorrect) {
+    currentPlayer.score += 50;
+    currentPlayer.gems += 2;
+    currentIndex++;
+    if(currentIndex >= currentSessionQuestions.length) {
+      endGame();
+    } else {
+      loadQuestion();
+    }
   } else {
-    questions.push(questions[index]); // wrong -> new question later
-    index++;
+    alert("Wrong! You get a different question to try again.");
+    // Đổi câu hỏi hiện tại bằng một câu ngẫu nhiên khác từ database
+    currentSessionQuestions[currentIndex] = database[Math.floor(Math.random()*database.length)];
+    loadQuestion();
   }
+  updateStats();
+}
 
-  document.getElementById("score").textContent = score;
-  document.getElementById("gems").textContent = gems;
-
-  if (index >= questions.length) {
-    finishGame();
-  } else {
-    showQuestion();
-  }
+function updateStats() {
+  document.getElementById('score').textContent = currentPlayer.score;
+  document.getElementById('gems').textContent = currentPlayer.gems;
 }
 
 function startTimer() {
-  timer = setInterval(() => {
-    timeLeft--;
-    const m = Math.floor(timeLeft / 60);
-    const s = timeLeft % 60;
-    document.getElementById("time").textContent = `${m}:${s.toString().padStart(2,'0')}`;
-    if (timeLeft <= 0) {
+  gameInterval = setInterval(() => {
+    timeRemaining--;
+    let mins = Math.floor(timeRemaining / 60);
+    let secs = timeRemaining % 60;
+    document.getElementById('timer').textContent = 
+      `${mins}:${secs.toString().padStart(2, '0')}`;
+
+    if(timeRemaining <= 0) {
+      clearInterval(gameInterval);
+      alert("Time is up! Let's try a new set.");
       location.reload();
     }
   }, 1000);
 }
 
-function finishGame() {
-  clearInterval(timer);
-  document.getElementById("game").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
-  document.getElementById("finalScore").textContent = score;
-  document.getElementById("finalGems").textContent = gems;
+function endGame() {
+  clearInterval(gameInterval);
+  document.getElementById('game-screen').classList.add('hidden');
+  document.getElementById('result-screen').classList.remove('hidden');
+  
+  document.getElementById('res-name').textContent = currentPlayer.name;
+  document.getElementById('res-score').textContent = currentPlayer.score;
+  document.getElementById('res-gems').textContent = currentPlayer.gems;
 
-  const lb = JSON.parse(localStorage.getItem("leaderboard") || "[]");
-  lb.push({ name: document.getElementById("name").value, score });
-  lb.sort((a,b)=>b.score-a.score);
-  localStorage.setItem("leaderboard", JSON.stringify(lb.slice(0,10)));
-  renderLeaderboard();
+  saveLeaderboard();
 }
 
-function renderLeaderboard() {
-  const lb = JSON.parse(localStorage.getItem("leaderboard") || "[]");
-  const ol = document.getElementById("leaderboard");
-  ol.innerHTML = "";
-  lb.forEach(p => {
-    const li = document.createElement("li");
-    li.textContent = `${p.name} - ${p.score}`;
-    ol.appendChild(li);
-  });
+function saveLeaderboard() {
+  let board = JSON.parse(localStorage.getItem('eng_leaderboard') || '[]');
+  board.push({name: currentPlayer.name, score: currentPlayer.score, class: currentPlayer.class});
+  board.sort((a, b) => b.score - a.score);
+  board = board.slice(0, 5); // Giữ top 5
+  localStorage.setItem('eng_leaderboard', JSON.stringify(board));
+  displayLeaderboard();
+}
+
+function displayLeaderboard() {
+  const board = JSON.parse(localStorage.getItem('eng_leaderboard') || '[]');
+  const list = document.getElementById('leaderboard-list');
+  list.innerHTML = board.map(item => 
+    `<li><span>${item.name} (${item.class})</span> <b>${item.score} pts</b></li>`
+  ).join('');
 }
 
 function toggleMusic() {
-  const m = document.getElementById("bgm");
-  m.paused ? m.play() : m.pause();
+  const audio = document.getElementById('bgMusic');
+  if (audio.paused) audio.play();
+  else audio.pause();
 }
 
-renderLeaderboard();
+// Chặn chuột phải (hạn chế công cụ dịch)
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+displayLeaderboard();
 </script>
 </body>
 </html>
