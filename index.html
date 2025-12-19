@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber English Master - THCS Edition</title>
+    <title>English Master - THCS Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -244,8 +244,8 @@
     <div class="container">
         
         <div id="login-screen" class="screen active">
-            <h1>Cyber English Master</h1>
-            <p>Phiên bản ôn tập THCS (Lớp 6-9)</p>
+            <h1>English Master</h1>
+            <p>Ôn Tập Tiếng Anh Cấp THCS (Lớp 6-9)</p>
             <input type="text" id="username" placeholder="Nhập Họ và Tên" autocomplete="off">
             <input type="text" id="userclass" placeholder="Nhập Lớp (Ví dụ: 8A)" autocomplete="off">
             <br>
@@ -306,41 +306,253 @@
         // Types: 'mcq' (Trắc nghiệm), 'scramble' (Ghép từ), 'error' (Tìm lỗi), 'rewrite' (Sửa câu)
         // Level: 1 (Dễ), 2 (Trung bình), 3 (Khó) - Ở đây ta gộp chung pool để random.
         
-        const questionBank = [
-            // --- PART 1: MULTIPLE CHOICE (Chọn đáp án đúng) ---
-            { type: 'mcq', q: "He ______ to school by bus everyday.", options: ["go", "goes", "went", "going"], a: "goes" },
-            { type: 'mcq', q: "She ______ cooking dinner right now.", options: ["is", "are", "am", "be"], a: "is" },
-            { type: 'mcq', q: "We have lived here ______ 2010.", options: ["since", "for", "in", "at"], a: "since" },
-            { type: 'mcq', q: "If it rains, I ______ at home.", options: ["stay", "stayed", "will stay", "would stay"], a: "will stay" },
-            { type: 'mcq', q: "My father enjoys ______ newspapers in the morning.", options: ["read", "reading", "to read", "reads"], a: "reading" },
-            { type: 'mcq', q: "This is the ______ book I have ever read.", options: ["interesting", "more interesting", "most interesting", "as interesting"], a: "most interesting" },
-            { type: 'mcq', q: "Lan speaks English very ______.", options: ["good", "well", "bad", "nice"], a: "well" },
-            
-            // --- PART 2: WORD SCRAMBLE (Ghép từ) ---
-            { type: 'scramble', q: "Arrange: name / is / My / John", a: "My name is John" },
-            { type: 'scramble', q: "Arrange: like / play / soccer / I / to", a: "I like to play soccer" },
-            { type: 'scramble', q: "Arrange: beautiful / She / a / girl / is", a: "She is a beautiful girl" },
-            { type: 'scramble', q: "Arrange: you / Where / from / come / do / ?", a: "Where do you come from ?" },
-            { type: 'scramble', q: "Arrange: not / did / yesterday / go / He / school / to", a: "He did not go to school yesterday" },
-            { type: 'scramble', q: "Arrange: watching / They / TV / now / are", a: "They are watching TV now" },
-            
-            // --- PART 3: FIND ERROR (Tìm lỗi sai) ---
-            // Format options: [A, B, C, D] tương ứng với các phần gạch chân.
-            // Hiển thị: "She (A)go to (B)school (C)by bus (D)yesterday."
-            { type: 'error', q: "She (A)go to (B)school (C)by bus (D)yesterday.", parts: ["go", "school", "by bus", "yesterday"], a: "go", full: "She <u>go</u> to school by bus yesterday." },
-            { type: 'error', q: "My brother (A)enjoy (B)playing (C)football (D)very much.", parts: ["enjoy", "playing", "football", "very much"], a: "enjoy", full: "My brother <u>enjoy</u> playing football very much." },
-            { type: 'error', q: "How (A)many (B)rice (C)do you (D)want?", parts: ["many", "rice", "do you", "want"], a: "many", full: "How <u>many</u> rice do you want?" },
-            { type: 'error', q: "(A)Because the rain, (B)we (C)stayed (D)at home.", parts: ["Because", "we", "stayed", "at home"], a: "Because", full: "<u>Because</u> the rain, we stayed at home." },
-            { type: 'error', q: "He (A)is (B)the (C)taller student (D)in the class.", parts: ["is", "the", "taller", "in the class"], a: "taller", full: "He is the <u>taller</u> student in the class." },
-            
-            // --- PART 4: SENTENCE CORRECTION/REWRITE (Sửa câu/Chọn câu đúng nghĩa) ---
-            { type: 'rewrite', q: "Wrong: 'He don't likes apples.' - Choose the correct sentence:", options: ["He doesn't like apples.", "He not like apples.", "He didn't likes apples.", "He don't like apples."], a: "He doesn't like apples." },
-            { type: 'rewrite', q: "Meaning: 'I usually go to school at 7am.' - Rewrite using 'My class...'", options: ["My class usually start at 7am.", "My class usually starts at 7am.", "My class is starting at 7am.", "My class usually started at 7am."], a: "My class usually starts at 7am." },
-            { type: 'rewrite', q: "Wrong: 'She plays piano very good.' - Fix the error:", options: ["She plays piano very well.", "She plays piano very bad.", "She play piano very good.", "She playing piano very good."], a: "She plays piano very well." },
-            { type: 'rewrite', q: "Meaning: 'Unless you study, you will fail.' - Rewrite using 'If...'", options: ["If you don't study, you will fail.", "If you study, you will fail.", "If you not study, you will fail.", "If you study, you won't fail."], a: "If you don't study, you will fail." },
-            { type: 'rewrite', q: "Wrong: 'This house is builded in 1990.' - Fix the error:", options: ["This house was built in 1990.", "This house is built in 1990.", "This house was build in 1990.", "This house build in 1990."], a: "This house was built in 1990." },
-             // ... Bạn có thể thêm hàng trăm câu hỏi vào mảng này theo mẫu trên.
-        ];
+            const questionBank = [
+    // --- PHẦN 1: THÌ (TENSES) - TRẮC NGHIỆM ---
+    { type: 'mcq', q: "She _______ her homework at the moment.", options: ["is doing", "does", "did", "has done"], a: "is doing" },
+    { type: 'mcq', q: "We _______ this film three times already.", options: ["saw", "see", "have seen", "are seeing"], a: "have seen" },
+    { type: 'mcq', q: "When I arrived, they _______ dinner.", options: ["were having", "have", "had", "are having"], a: "were having" },
+    { type: 'mcq', q: "By 2025, she _______ from university.", options: ["will graduate", "graduates", "will have graduated", "is graduating"], a: "will have graduated" },
+    { type: 'mcq', q: "He usually _______ to school by bike.", options: ["go", "goes", "went", "is going"], a: "goes" },
+    { type: 'mcq', q: "I _______ English for five years.", options: ["learn", "learned", "have learned", "am learning"], a: "have learned" },
+    { type: 'mcq', q: "She _______ TV when I called her.", options: ["watched", "was watching", "has watched", "watches"], a: "was watching" },
+    { type: 'mcq', q: "They _______ here since 2010.", options: ["live", "lived", "have lived", "are living"], a: "have lived" },
+    { type: 'mcq', q: "My father _______ home late last night.", options: ["comes", "came", "has come", "is coming"], a: "came" },
+    { type: 'mcq', q: "Look! It _______ heavily.", options: ["rains", "rained", "is raining", "has rained"], a: "is raining" },
+    { type: 'mcq', q: "She _______ already _______ dinner.", options: ["has / cooked", "is / cooking", "was / cooking", "will / cook"], a: "has / cooked" },
+    { type: 'mcq', q: "We _______ to the beach tomorrow.", options: ["go", "went", "will go", "have gone"], a: "will go" },
+    { type: 'mcq', q: "He _______ a book when the phone rang.", options: ["reads", "read", "was reading", "has read"], a: "was reading" },
+    { type: 'mcq', q: "She _______ never _______ sushi before.", options: ["has / eaten", "is / eating", "was / eating", "will / eat"], a: "has / eaten" },
+    { type: 'mcq', q: "By the time we arrived, the train _______.", options: ["leaves", "left", "had left", "has left"], a: "had left" },
+    { type: 'mcq', q: "I _______ him since last year.", options: ["don't see", "didn't see", "haven't seen", "won't see"], a: "haven't seen" },
+    { type: 'mcq', q: "She _______ to music every evening.", options: ["listen", "listens", "listened", "is listening"], a: "listens" },
+    { type: 'mcq', q: "They _______ football when it started to rain.", options: ["play", "played", "were playing", "have played"], a: "were playing" },
+    { type: 'mcq', q: "He _______ his keys, so he can't open the door.", options: ["loses", "lost", "has lost", "is losing"], a: "has lost" },
+    { type: 'mcq', q: "She _______ as a teacher for ten years.", options: ["works", "worked", "has worked", "is working"], a: "has worked" },
+    { type: 'mcq', q: "I _______ my homework before dinner yesterday.", options: ["finish", "finished", "had finished", "have finished"], a: "had finished" },
+    { type: 'mcq', q: "He _______ a car last month.", options: ["buys", "bought", "has bought", "is buying"], a: "bought" },
+    { type: 'mcq', q: "She _______ for the bus when I saw her.", options: ["waits", "waited", "was waiting", "has waited"], a: "was waiting" },
+    { type: 'mcq', q: "We _______ English every Monday.", options: ["study", "studied", "have studied", "are studying"], a: "study" },
+    { type: 'mcq', q: "They _______ in this house since they got married.", options: ["live", "lived", "have lived", "are living"], a: "have lived" },
+    { type: 'mcq', q: "She _______ tired because she worked late.", options: ["is", "was", "has been", "will be"], a: "was" },
+    { type: 'mcq', q: "He _______ his homework yet.", options: ["doesn't finish", "didn't finish", "hasn't finished", "won't finish"], a: "hasn't finished" },
+    { type: 'mcq', q: "When we got there, the movie _______.", options: ["starts", "started", "had started", "has started"], a: "had started" },
+    { type: 'mcq', q: "She _______ to Paris twice.", options: ["goes", "went", "has gone", "is going"], a: "has gone" },
+    { type: 'mcq', q: "I _______ him tomorrow.", options: ["meet", "met", "will meet", "have met"], a: "will meet" },
+    { type: 'mcq', q: "He _______ breakfast when I arrived.", options: ["has", "had", "was having", "is having"], a: "was having" },
+    { type: 'mcq', q: "She _______ a letter at the moment.", options: ["writes", "wrote", "is writing", "has written"], a: "is writing" },
+    { type: 'mcq', q: "They _______ the house before 2010.", options: ["build", "built", "had built", "have built"], a: "had built" },
+    { type: 'mcq', q: "I _______ my friend every weekend.", options: ["visit", "visited", "have visited", "am visiting"], a: "visit" },
+    { type: 'mcq', q: "She _______ asleep when the phone rang.", options: ["falls", "fell", "was falling", "has fallen"], a: "was falling" },
+    { type: 'mcq', q: "He _______ English very well.", options: ["speak", "speaks", "spoke", "has spoken"], a: "speaks" },
+    { type: 'mcq', q: "We _______ lunch when she came.", options: ["have", "had", "were having", "are having"], a: "were having" },
+    { type: 'mcq', q: "She _______ her keys an hour ago.", options: ["loses", "lost", "has lost", "is losing"], a: "lost" },
+    { type: 'mcq', q: "I _______ never _______ such a beautiful place.", options: ["have / seen", "am / seeing", "was / seeing", "will / see"], a: "have / seen" },
+    { type: 'mcq', q: "They _______ dinner before we arrived.", options: ["finish", "finished", "had finished", "have finished"], a: "had finished" },
+    { type: 'mcq', q: "She usually _______ up at 6 a.m.", options: ["get", "gets", "got", "is getting"], a: "gets" },
+    { type: 'mcq', q: "He _______ TV right now.", options: ["watches", "watched", "is watching", "has watched"], a: "is watching" },
+    { type: 'mcq', q: "They _______ to Hanoi last summer.", options: ["go", "went", "have gone", "are going"], a: "went" },
+    { type: 'mcq', q: "I _______ my homework already.", options: ["do", "did", "have done", "am doing"], a: "have done" },
+    { type: 'mcq', q: "She _______ when the teacher entered the room.", options: ["talks", "talked", "was talking", "has talked"], a: "was talking" },
+    { type: 'mcq', q: "We _______ English since primary school.", options: ["learn", "learned", "have learned", "are learning"], a: "have learned" },
+    { type: 'mcq', q: "He _______ the door before he left.", options: ["locks", "locked", "had locked", "has locked"], a: "had locked" },
+    { type: 'mcq', q: "She _______ very happy yesterday.", options: ["is", "was", "has been", "will be"], a: "was" },
+    { type: 'mcq', q: "I _______ to music while doing homework.", options: ["listen", "listened", "am listening", "have listened"], a: "am listening" },
+    { type: 'mcq', q: "They _______ in this city for a long time.", options: ["live", "lived", "have lived", "are living"], a: "have lived" },
+
+    // --- PHẦN 2: CÂU BỊ ĐỘNG (PASSIVE VOICE) - GHÉP TỪ ---
+    // (Đã chuyển từ Rewrite sang Scramble để phù hợp với game)
+    { type: 'scramble', q: "Rewrite: They clean the classroom every day.", a: "The classroom is cleaned every day" },
+    { type: 'scramble', q: "Rewrite: She wrote this letter yesterday.", a: "This letter was written yesterday" },
+    { type: 'scramble', q: "Rewrite: They will build a new hospital.", a: "A new hospital will be built" },
+    { type: 'scramble', q: "Rewrite: People speak English all over the world.", a: "English is spoken all over the world" },
+    { type: 'scramble', q: "Rewrite: Someone has stolen my phone.", a: "My phone has been stolen" },
+    { type: 'scramble', q: "Rewrite: They are repairing the road now.", a: "The road is being repaired now" },
+    { type: 'scramble', q: "Rewrite: He finished his homework last night.", a: "His homework was finished last night" },
+    { type: 'scramble', q: "Rewrite: They have built this bridge recently.", a: "This bridge has been built recently" },
+    { type: 'scramble', q: "Rewrite: She will invite him to the party.", a: "He will be invited to the party" },
+    { type: 'scramble', q: "Rewrite: They don't allow students to use phones.", a: "Students are not allowed to use phones" },
+
+    // --- PHẦN 3: CÂU BỊ ĐỘNG - TRẮC NGHIỆM ---
+    { type: 'mcq', q: "The house _______ last year.", options: ["build", "built", "was built", "is built"], a: "was built" },
+    { type: 'mcq', q: "English _______ in many countries.", options: ["speaks", "is spoken", "spoke", "has spoken"], a: "is spoken" },
+    { type: 'mcq', q: "The homework _______ by the students.", options: ["do", "did", "is done", "has done"], a: "is done" },
+    { type: 'mcq', q: "The letter _______ tomorrow.", options: ["will send", "will be sent", "is sent", "has sent"], a: "will be sent" },
+    { type: 'mcq', q: "The room _______ every day.", options: ["cleans", "is cleaned", "cleaned", "has cleaned"], a: "is cleaned" },
+    { type: 'mcq', q: "The car _______ repaired at the moment.", options: ["is", "is being", "has been", "was"], a: "is being" },
+    { type: 'mcq', q: "My bike _______ stolen last night.", options: ["is", "was", "has", "has been"], a: "was" },
+    { type: 'mcq', q: "This book _______ written by a famous author.", options: ["is", "was", "has", "is being"], a: "was" },
+    { type: 'mcq', q: "The test _______ next Monday.", options: ["will hold", "will be held", "is held", "has held"], a: "will be held" },
+    { type: 'mcq', q: "The cake _______ by my mother.", options: ["makes", "made", "is made", "has made"], a: "is made" },
+
+    // --- PHẦN 4: TÌM LỖI SAI (ERROR IDENTIFICATION) ---
+    // (Đã format lại để hiện A, B, C, D rõ ràng)
+    { type: 'error', q: "The homework (A)are (B)done (C)by (D)students.", parts: ["are", "done", "by", "students"], a: "are", full: "The homework <u>are</u> done by students." },
+    { type: 'error', q: "The letter (A)was (B)send (C)yesterday.", parts: ["was", "send", "yesterday"], a: "send", full: "The letter was <u>send</u> yesterday." },
+    { type: 'error', q: "English (A)is (B)speak (C)here.", parts: ["is", "speak", "here"], a: "speak", full: "English is <u>speak</u> here." },
+    { type: 'error', q: "The house (A)is (B)build (C)last year.", parts: ["is", "build", "last year"], a: "build", full: "The house is <u>build</u> last year." },
+    { type: 'error', q: "The book (A)were (B)written (C)by (D)him.", parts: ["were", "written", "by", "him"], a: "were", full: "The book <u>were</u> written by him." },
+    { type: 'error', q: "The room (A)is (B)clean (C)every day.", parts: ["is", "clean", "every day"], a: "clean", full: "The room is <u>clean</u> every day." },
+    { type: 'error', q: "The car (A)has (B)repair (C)recently.", parts: ["has", "repair", "recently"], a: "repair", full: "The car has <u>repair</u> recently." },
+    { type: 'error', q: "This song (A)is (B)sing (C)by (D)her.", parts: ["is", "sing", "by", "her"], a: "sing", full: "This song is <u>sing</u> by her." },
+    { type: 'error', q: "The windows (A)are (B)break (C)by (D)the wind.", parts: ["are", "break", "by", "the wind"], a: "break", full: "The windows are <u>break</u> by the wind." },
+    { type: 'error', q: "The problem (A)was (B)solve (C)quickly.", parts: ["was", "solve", "quickly"], a: "solve", full: "The problem was <u>solve</u> quickly." },
+
+    // --- PHẦN 5: BỊ ĐỘNG - GHÉP TỪ (Tiếp) ---
+    { type: 'scramble', q: "Rewrite: Someone is painting the house.", a: "The house is being painted" },
+    { type: 'scramble', q: "Rewrite: They had finished the work before noon.", a: "The work had been finished before noon" },
+    { type: 'scramble', q: "Rewrite: She can solve this problem.", a: "This problem can be solved" },
+    { type: 'scramble', q: "Rewrite: They must obey the rules.", a: "The rules must be obeyed" },
+    { type: 'scramble', q: "Rewrite: Nobody has cleaned the room yet.", a: "The room hasn't been cleaned yet" },
+    { type: 'scramble', q: "Rewrite: They are going to open a new shop.", a: "A new shop is going to be opened" },
+    { type: 'scramble', q: "Rewrite: People believe that he is honest.", a: "It is believed that he is honest" },
+    { type: 'scramble', q: "Rewrite: They didn't invite her to the meeting.", a: "She wasn't invited to the meeting" },
+    { type: 'scramble', q: "Rewrite: Someone will announce the results tomorrow.", a: "The results will be announced tomorrow" },
+    { type: 'scramble', q: "Rewrite: They have just repaired the computer.", a: "The computer has just been repaired" },
+
+    // --- PHẦN 6: BỊ ĐỘNG - TRẮC NGHIỆM (Tiếp) ---
+    { type: 'mcq', q: "The classroom _______ cleaned after school.", options: ["is", "is being", "was", "has"], a: "is" },
+    { type: 'mcq', q: "The dishes _______ washed by my sister.", options: ["are", "is", "were", "be"], a: "are" },
+    { type: 'mcq', q: "This song _______ often played on the radio.", options: ["is", "was", "has", "will"], a: "is" },
+    { type: 'mcq', q: "The report _______ finished tomorrow.", options: ["is", "will be", "was", "has been"], a: "will be" },
+    { type: 'mcq', q: "The match _______ postponed because of rain.", options: ["is", "was", "has", "will"], a: "was" },
+    { type: 'mcq', q: "My homework _______ checked by the teacher.", options: ["is", "are", "was", "be"], a: "is" },
+    { type: 'mcq', q: "The rules _______ explained clearly.", options: ["is", "are", "was", "be"], a: "are" },
+    { type: 'mcq', q: "The window _______ broken last night.", options: ["is", "was", "has", "is being"], a: "was" },
+    { type: 'mcq', q: "The project _______ completed on time.", options: ["is", "was", "has been", "will"], a: "has been" },
+    { type: 'mcq', q: "The cake _______ eaten already.", options: ["is", "was", "has been", "will be"], a: "has been" },
+
+    // --- PHẦN 7: CÂU ĐIỀU KIỆN & CÂU ƯỚC - TRẮC NGHIỆM ---
+    { type: 'mcq', q: "If I _______ you, I wouldn't do that.", options: ["am", "was", "were", "be"], a: "were" },
+    { type: 'mcq', q: "If it rains, we _______ at home.", options: ["stay", "will stay", "stayed", "would stay"], a: "will stay" },
+    { type: 'mcq', q: "If she _______ harder, she would pass the exam.", options: ["studies", "studied", "study", "will study"], a: "studied" },
+    { type: 'mcq', q: "If we had more time, we _______ the museum.", options: ["visit", "will visit", "would visit", "visited"], a: "would visit" },
+    { type: 'mcq', q: "If he _______ early, he won't miss the bus.", options: ["leave", "leaves", "left", "would leave"], a: "leaves" },
+    { type: 'mcq', q: "If I had known about the test, I _______ harder.", options: ["study", "will study", "would study", "would have studied"], a: "would have studied" },
+    { type: 'mcq', q: "You will succeed if you _______ your best.", options: ["try", "tried", "will try", "would try"], a: "try" },
+    { type: 'mcq', q: "If she were taller, she _______ a model.", options: ["becomes", "will become", "would become", "became"], a: "would become" },
+    { type: 'mcq', q: "If they had left earlier, they _______ late.", options: ["won't be", "wouldn't be", "aren't", "weren't"], a: "wouldn't be" },
+    { type: 'mcq', q: "If it _______ tomorrow, we will cancel the trip.", options: ["rain", "rains", "rained", "will rain"], a: "rains" },
+
+    // --- PHẦN 8: CÂU ƯỚC (WISH) - GHÉP TỪ ---
+    { type: 'scramble', q: "Rewrite: I don't have a bike. (I wish...)", a: "I wish I had a bike" },
+    { type: 'scramble', q: "Rewrite: She can't swim. (She wishes...)", a: "She wishes she could swim" },
+    { type: 'scramble', q: "Rewrite: I am not rich. (I wish...)", a: "I wish I were rich" },
+    { type: 'scramble', q: "Rewrite: He didn't study hard. (He wishes...)", a: "He wishes he had studied hard" },
+    { type: 'scramble', q: "Rewrite: It is raining now. (I wish...)", a: "I wish it were not raining" },
+    { type: 'scramble', q: "Rewrite: I can't speak English well. (I wish...)", a: "I wish I could speak English well" },
+    { type: 'scramble', q: "Rewrite: She was late for school. (She wishes...)", a: "She wishes she hadn't been late for school" },
+    { type: 'scramble', q: "Rewrite: We don't live near the school. (We wish...)", a: "We wish we lived near the school" },
+    { type: 'scramble', q: "Rewrite: He didn't listen to my advice. (He wishes...)", a: "He wishes he had listened to my advice" },
+    { type: 'scramble', q: "Rewrite: I have too much homework. (I wish...)", a: "I wish I didn't have so much homework" },
+
+    // --- PHẦN 9: CÂU ĐIỀU KIỆN (Tiếp) ---
+    { type: 'mcq', q: "If she _______ more careful, she wouldn't make mistakes.", options: ["is", "was", "were", "had been"], a: "were" },
+    { type: 'mcq', q: "If you heat ice, it _______.", options: ["melts", "melted", "will melt", "would melt"], a: "melts" },
+    { type: 'mcq', q: "If I see him, I _______ him the news.", options: ["tell", "told", "will tell", "would tell"], a: "will tell" },
+    { type: 'mcq', q: "If we had known the way, we _______ lost.", options: ["won't get", "wouldn't get", "wouldn't have got", "did get"], a: "wouldn't have got" },
+    { type: 'mcq', q: "If he weren't busy, he _______ us.", options: ["help", "helps", "would help", "will help"], a: "would help" },
+
+    // --- PHẦN 10: SẮP XẾP CÂU ĐIỀU KIỆN ---
+    { type: 'scramble', q: "Arrange: If / rain / it / will / stay / we / home", a: "If it rains we will stay home" },
+    { type: 'scramble', q: "Arrange: had / If / I / time / enough / I / would / travel", a: "If I had enough time I would travel" },
+    { type: 'scramble', q: "Arrange: would / you / what / do / were / rich / if / you", a: "What would you do if you were rich" },
+    { type: 'scramble', q: "Arrange: wish / I / speak / could / English / well", a: "I wish I could speak English well" },
+    { type: 'scramble', q: "Arrange: had / studied / he / passed / if / would / he", a: "If he had studied he would have passed" },
+
+    // --- PHẦN 11: MỆNH ĐỀ QUAN HỆ (RELATIVE CLAUSES) ---
+    { type: 'mcq', q: "If she _______ earlier, she wouldn't be late now.", options: ["left", "had left", "leaves", "would leave"], a: "had left" },
+    { type: 'mcq', q: "I wish I _______ taller.", options: ["am", "was", "were", "be"], a: "were" },
+    { type: 'mcq', q: "If we save enough money, we _______ a new house.", options: ["buy", "will buy", "bought", "would buy"], a: "will buy" },
+    { type: 'mcq', q: "He wishes he _______ so much time playing games.", options: ["doesn't waste", "didn't waste", "hasn't wasted", "won't waste"], a: "didn't waste" },
+    { type: 'mcq', q: "If I were you, I _______ that job.", options: ["accept", "will accept", "would accept", "accepted"], a: "would accept" },
+
+    // --- PHẦN 12: CÂU ƯỚC - GHÉP TỪ (Tiếp) ---
+    { type: 'scramble', q: "Rewrite: I didn't know her phone number. (I wish...)", a: "I wish I had known her phone number" },
+    { type: 'scramble', q: "Rewrite: He can't come today. (He wishes...)", a: "He wishes he could come today" },
+    { type: 'scramble', q: "Rewrite: They live far from school. (They wish...)", a: "They wish they lived near school" },
+    { type: 'scramble', q: "Rewrite: She failed the exam. (She wishes...)", a: "She wishes she had passed the exam" },
+    { type: 'scramble', q: "Rewrite: I am busy now. (I wish...)", a: "I wish I weren't busy now" },
+
+    // --- PHẦN 13: MỆNH ĐỀ QUAN HỆ - TRẮC NGHIỆM ---
+    { type: 'mcq', q: "If it stops raining, we _______ out.", options: ["go", "will go", "went", "would go"], a: "will go" },
+    { type: 'mcq', q: "If I had a map, I _______ lost.", options: ["won't get", "wouldn't get", "didn't get", "haven't got"], a: "wouldn't get" },
+    { type: 'mcq', q: "She wishes she _______ more friends.", options: ["has", "had", "will have", "would have"], a: "had" },
+    { type: 'mcq', q: "If he had listened to the teacher, he _______ better.", options: ["does", "did", "would do", "would have done"], a: "would have done" },
+    { type: 'mcq', q: "If you study hard, you _______ the exam.", options: ["pass", "passed", "will pass", "would pass"], a: "will pass" },
+
+    // --- PHẦN 14: SẮP XẾP TỪ ---
+    { type: 'scramble', q: "Arrange: wish / I / not / be / late / today", a: "I wish I were not late today" },
+    { type: 'scramble', q: "Arrange: would / have / we / gone / if / known / had / we", a: "If we had known we would have gone" },
+    { type: 'scramble', q: "Arrange: if / were / what / you / do / free / you", a: "What would you do if you were free" },
+    { type: 'scramble', q: "Arrange: wish / she / not / forget / my / birthday", a: "She wishes she didn't forget my birthday" },
+    { type: 'scramble', q: "Arrange: had / saved / if / money / I / bought / would / I / it", a: "If I had saved money I would have bought it" },
+
+    // --- PHẦN 15: MỆNH ĐỀ QUAN HỆ - TRẮC NGHIỆM (Tiếp) ---
+    { type: 'mcq', q: "The boy _______ is standing over there is my brother.", options: ["who", "which", "whom", "whose"], a: "who" },
+    { type: 'mcq', q: "The book _______ I bought yesterday is very interesting.", options: ["who", "which", "whose", "where"], a: "which" },
+    { type: 'mcq', q: "The girl _______ mother is a teacher lives next door.", options: ["who", "which", "whose", "whom"], a: "whose" },
+    { type: 'mcq', q: "This is the place _______ we first met.", options: ["which", "that", "where", "who"], a: "where" },
+    { type: 'mcq', q: "The man _______ you met yesterday is my uncle.", options: ["who", "which", "whose", "where"], a: "who" },
+    { type: 'mcq', q: "The students _______ study hard will pass the exam.", options: ["which", "who", "whose", "where"], a: "who" },
+    { type: 'mcq', q: "The house _______ was built last year is very large.", options: ["who", "which", "whose", "where"], a: "which" },
+    { type: 'mcq', q: "That is the girl _______ brother won the prize.", options: ["who", "which", "whose", "whom"], a: "whose" },
+    { type: 'mcq', q: "The movie _______ we watched last night was boring.", options: ["who", "which", "where", "whose"], a: "which" },
+    { type: 'mcq', q: "The teacher _______ teaches us English is very kind.", options: ["who", "which", "where", "whose"], a: "who" },
+
+    // --- PHẦN 16: TÌM LỖI SAI (Tiếp) ---
+    { type: 'error', q: "The man (A)which (B)lives (C)next door (D)is friendly.", parts: ["which", "lives", "next door", "is"], a: "which", full: "The man <u>which</u> lives next door is friendly." },
+    { type: 'error', q: "The book (A)who (B)I (C)borrowed (D)is interesting.", parts: ["who", "I", "borrowed", "is"], a: "who", full: "The book <u>who</u> I borrowed is interesting." },
+    { type: 'error', q: "The girl (A)whose (B)she (C)is (D)singing is my friend.", parts: ["whose", "she", "is", "singing"], a: "she", full: "The girl whose <u>she</u> is singing is my friend." },
+    { type: 'error', q: "The place (A)which (B)we (C)met (D)there is beautiful.", parts: ["which", "we", "met", "there"], a: "there", full: "The place which we met <u>there</u> is beautiful." },
+    { type: 'error', q: "The student (A)who (B)study (C)hard (D)will succeed.", parts: ["who", "study", "hard", "will"], a: "study", full: "The student who <u>study</u> hard will succeed." },
+
+    // --- PHẦN 17: CÂU TƯỜNG THUẬT (REPORTED SPEECH) - GHÉP TỪ ---
+    { type: 'scramble', q: "Rewrite: 'I am a student,' said Nam.", a: "Nam said he was a student" },
+    { type: 'scramble', q: "Rewrite: 'I will help you,' she said.", a: "She said she would help me" },
+    { type: 'scramble', q: "Rewrite: 'I am doing my homework,' he said.", a: "He said he was doing his homework" },
+    { type: 'scramble', q: "Rewrite: 'We have finished the work,' they said.", a: "They said they had finished the work" },
+    { type: 'scramble', q: "Rewrite: 'I can't swim,' she said.", a: "She said she couldn't swim" },
+    { type: 'scramble', q: "Rewrite: 'I went to Hanoi last year,' he said.", a: "He said he had gone to Hanoi the year before" },
+    { type: 'scramble', q: "Rewrite: 'I am tired now,' she said.", a: "She said she was tired then" },
+    { type: 'scramble', q: "Rewrite: 'We are studying English,' they said.", a: "They said they were studying English" },
+    { type: 'scramble', q: "Rewrite: 'I will call you tomorrow,' he said.", a: "He said he would call me the next day" },
+    { type: 'scramble', q: "Rewrite: 'I have lost my keys,' she said.", a: "She said she had lost her keys" },
+
+    // --- PHẦN 18: TƯỜNG THUẬT - TRẮC NGHIỆM ---
+    { type: 'mcq', q: "He said that he _______ busy then.", options: ["is", "was", "will be", "has been"], a: "was" },
+    { type: 'mcq', q: "She told me that she _______ the test already.", options: ["finishes", "finished", "has finished", "had finished"], a: "had finished" },
+    { type: 'mcq', q: "They said they _______ to the party the next day.", options: ["go", "went", "will go", "would go"], a: "would go" },
+    { type: 'mcq', q: "He told me that he _______ English very well.", options: ["speaks", "spoke", "spoken", "speaking"], a: "spoke" },
+    { type: 'mcq', q: "She said that she _______ busy at that time.", options: ["is", "was", "has been", "will be"], a: "was" },
+
+    // --- PHẦN 19: SẮP XẾP CÂU (REPORTED/RELATIVE) ---
+    { type: 'scramble', q: "Arrange: boy / who / the / is / playing / my / brother / football", a: "The boy who is playing football is my brother" },
+    { type: 'scramble', q: "Arrange: said / he / tired / was / that / he", a: "He said that he was tired" },
+    { type: 'scramble', q: "Arrange: girl / whose / doctor / is / mother / the / my / friend / is", a: "The girl whose mother is a doctor is my friend" },
+    { type: 'scramble', q: "Arrange: she / said / would / she / come / later / that", a: "She said that she would come later" },
+    { type: 'scramble', q: "Arrange: the / which / book / reading / am / I / interesting / is", a: "The book which I am reading is interesting" },
+
+    // --- PHẦN 20: TRẮC NGHIỆM HỖN HỢP ---
+    { type: 'mcq', q: "The man _______ car was stolen called the police.", options: ["who", "which", "whose", "where"], a: "whose" },
+    { type: 'mcq', q: "This is the school _______ I studied last year.", options: ["who", "which", "where", "whose"], a: "where" },
+    { type: 'mcq', q: "She said that she _______ her homework.", options: ["does", "did", "has done", "had done"], a: "had done" },
+    { type: 'mcq', q: "The people _______ live here are very friendly.", options: ["who", "which", "whose", "where"], a: "who" },
+    { type: 'mcq', q: "He told me that he _______ me the day before.", options: ["meets", "met", "has met", "had met"], a: "had met" },
+
+    // --- PHẦN 21: TƯỜNG THUẬT - GHÉP TỪ ---
+    { type: 'scramble', q: "Rewrite: 'I am going to the library,' she said.", a: "She said she was going to the library" },
+    { type: 'scramble', q: "Rewrite: 'We will finish it soon,' they said.", a: "They said they would finish it soon" },
+    { type: 'scramble', q: "Rewrite: 'I don't like math,' he said.", a: "He said he didn't like math" },
+    { type: 'scramble', q: "Rewrite: 'I am watching TV now,' Nam said.", a: "Nam said he was watching TV then" },
+    { type: 'scramble', q: "Rewrite: 'I have lived here for years,' she said.", a: "She said she had lived there for years" },
+
+    // --- PHẦN 22: TÌM LỖI SAI (Cuối) ---
+    { type: 'error', q: "The boy (A)who (B)she (C)likes (D)is very kind.", parts: ["who", "she", "likes", "is"], a: "she", full: "The boy who <u>she</u> likes is very kind." },
+    { type: 'error', q: "He said (A)that (B)he (C)will (D)come later.", parts: ["that", "he", "will", "come"], a: "will", full: "He said that he <u>will</u> come later." },
+    { type: 'error', q: "The place (A)where (B)we (C)met (D)there was crowded.", parts: ["where", "we", "met", "there"], a: "there", full: "The place where we met <u>there</u> was crowded." },
+    { type: 'error', q: "She said she (A)is (B)happy (C)then.", parts: ["she", "is", "happy", "then"], a: "is", full: "She said she <u>is</u> happy then." },
+    { type: 'error', q: "The student (A)which (B)won (C)the prize (D)is my friend.", parts: ["which", "won", "the prize", "is"], a: "which", full: "The student <u>which</u> won the prize is my friend." }
+];
 
         // --- GAME VARIABLES ---
         let currentUser = { name: "", class: "" };
