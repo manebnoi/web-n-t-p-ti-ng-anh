@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>English Quiz Master — Tech Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #312e81);
+      color: #e5e7eb;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #22d3ee;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 0 25px rgba(34, 211, 238, 0.15);
+    }
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    button {
+      background: linear-gradient(90deg, #22d3ee, #6366f1);
+      color: #020617;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { opacity: 0.9; }
+    .choice {
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: #020617;
+      cursor: pointer;
+    }
+    .choice:hover { background: #1e293b; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <audio id="bgm" loop src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_aeef7a7b7c.mp3"></audio>
+
+  <div class="container">
+    <h1>English Quiz Master — PRO</h1>
+
+    <!-- LOGIN -->
+    <div class="card" id="login">
+      <h2>Player Information</h2>
+      <input id="name" placeholder="Full Name" />
+      <input id="class" placeholder="Class" />
+      <button onclick="startGame()">Start Game</button>
+      <br><br>
+      <button onclick="toggleMusic()">Music ON / OFF</button>
+    </div>
+
+    <!-- GAME -->
+    <div class="card hidden" id="game">
+      <div class="topbar">
+        <div>Score: <span id="score">0</span></div>
+        <div>Time: <span id="time">25:00</span></div>
+        <div>Gems: <span id="gems">0</span></div>
+      </div>
+      <h2 id="sectionTitle"></h2>
+      <p id="question"></p>
+      <div id="choices"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="card hidden" id="result">
+      <h2>Congratulations 🎉</h2>
+      <p>You finished all levels!</p>
+      <p>Total Score: <span id="finalScore"></span></p>
+      <p>Total Gems: <span id="finalGems"></span> 💎</p>
+      <button onclick="location.reload()">Play Again</button>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="card">
+      <h2>Leaderboard</h2>
+      <ol id="leaderboard"></ol>
+    </div>
+  </div>
+
+<script>
+/* ===== QUESTION GENERATOR (1000+) ===== */
+const sections = [
+  "Word Arrangement",
+  "Choose the Correct Answer",
+  "Find the Mistake",
+  "Sentence Correction"
+];
+
+function generateQuestions() {
+  const all = [];
+  for (let s = 0; s < 4; s++) {
+    for (let i = 1; i <= 250; i++) {
+      all.push({
+        section: s,
+        q: `Question ${i} of ${sections[s]}`,
+        choices: ["A", "B", "C", "D"],
+        answer: Math.floor(Math.random() * 4)
+      });
+    }
+  }
+  return all;
+}
+
+let questions = generateQuestions().sort(() => Math.random() - 0.5);
+let index = 0;
+let score = 0;
+let gems = 0;
+let timer;
+let timeLeft = 1500;
+
+function startGame() {
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("bgm").play();
+  startTimer();
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[index];
+  document.getElementById("sectionTitle").textContent = sections[q.section];
+  document.getElementById("question").textContent = q.q;
+  const ctn = document.getElementById("choices");
+  ctn.innerHTML = "";
+  q.choices.forEach((c, i) => {
+    const div = document.createElement("div");
+    div.className = "choice";
+    div.textContent = c;
+    div.onclick = () => selectAnswer(i);
+    ctn.appendChild(div);
+  });
+}
+
+function selectAnswer(i) {
+  if (i === questions[index].answer) {
+    score += 10;
+    gems += 1;
+    index++;
+  } else {
+    questions.push(questions[index]); // wrong -> new question later
+    index++;
+  }
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("gems").textContent = gems;
+
+  if (index >= questions.length) {
+    finishGame();
+  } else {
+    showQuestion();
+  }
+}
+
+function startTimer() {
+  timer = setInterval(() => {
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    document.getElementById("time").textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    if (timeLeft <= 0) {
+      location.reload();
+    }
+  }, 1000);
+}
+
+function finishGame() {
+  clearInterval(timer);
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("finalScore").textContent = score;
+  document.getElementById("finalGems").textContent = gems;
+
+  const lb = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+  lb.push({ name: document.getElementById("name").value, score });
+  lb.sort((a,b)=>b.score-a.score);
+  localStorage.setItem("leaderboard", JSON.stringify(lb.slice(0,10)));
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  const lb = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+  const ol = document.getElementById("leaderboard");
+  ol.innerHTML = "";
+  lb.forEach(p => {
+    const li = document.createElement("li");
+    li.textContent = `${p.name} - ${p.score}`;
+    ol.appendChild(li);
+  });
+}
+
+function toggleMusic() {
+  const m = document.getElementById("bgm");
+  m.paused ? m.play() : m.pause();
+}
+
+renderLeaderboard();
+</script>
+</body>
+</html>
