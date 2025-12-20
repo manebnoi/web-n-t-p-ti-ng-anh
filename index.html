@@ -304,9 +304,9 @@
     <script>
         // --- DATABASE CÂU HỎI (Mẫu khoảng 30 câu, bạn có thể copy paste thêm để đủ 250 câu) ---
         // Types: 'mcq' (Trắc nghiệm), 'scramble' (Ghép từ), 'error' (Tìm lỗi), 'rewrite' (Sửa câu)
-        // Level: 1 (Dễ), 2 (Trung bình), 3 (Khó) - Ở đây ta gộp chung pool để random.
+        // Level: 1 (Dễ), 2 (Trung bình), 3 (Khó) - Ở đây ta gộp chung pool để random
         
-            const questionBank = [
+                const questions = [
     // --- PHẦN 1: THÌ (TENSES) - TRẮC NGHIỆM ---
     { type: 'mcq', q: "She _______ her homework at the moment.", options: ["is doing", "does", "did", "has done"], a: "is doing" },
     { type: 'mcq', q: "We _______ this film three times already.", options: ["saw", "see", "have seen", "are seeing"], a: "have seen" },
@@ -360,7 +360,6 @@
     { type: 'mcq', q: "They _______ in this city for a long time.", options: ["live", "lived", "have lived", "are living"], a: "have lived" },
 
     // --- PHẦN 2: CÂU BỊ ĐỘNG (PASSIVE VOICE) - GHÉP TỪ ---
-    // (Đã chuyển từ Rewrite sang Scramble để phù hợp với game)
     { type: 'scramble', q: "Rewrite: They clean the classroom every day.", a: "The classroom is cleaned every day" },
     { type: 'scramble', q: "Rewrite: She wrote this letter yesterday.", a: "This letter was written yesterday" },
     { type: 'scramble', q: "Rewrite: They will build a new hospital.", a: "A new hospital will be built" },
@@ -385,7 +384,6 @@
     { type: 'mcq', q: "The cake _______ by my mother.", options: ["makes", "made", "is made", "has made"], a: "is made" },
 
     // --- PHẦN 4: TÌM LỖI SAI (ERROR IDENTIFICATION) ---
-    // (Đã format lại để hiện A, B, C, D rõ ràng)
     { type: 'error', q: "The homework (A)are (B)done (C)by (D)students.", parts: ["are", "done", "by", "students"], a: "are", full: "The homework <u>are</u> done by students." },
     { type: 'error', q: "The letter (A)was (B)send (C)yesterday.", parts: ["was", "send", "yesterday"], a: "send", full: "The letter was <u>send</u> yesterday." },
     { type: 'error', q: "English (A)is (B)speak (C)here.", parts: ["is", "speak", "here"], a: "speak", full: "English is <u>speak</u> here." },
@@ -452,12 +450,12 @@
     { type: 'mcq', q: "If we had known the way, we _______ lost.", options: ["won't get", "wouldn't get", "wouldn't have got", "did get"], a: "wouldn't have got" },
     { type: 'mcq', q: "If he weren't busy, he _______ us.", options: ["help", "helps", "would help", "will help"], a: "would help" },
 
-    // --- PHẦN 10: SẮP XẾP CÂU ĐIỀU KIỆN ---
-    { type: 'scramble', q: "Arrange: If / rain / it / will / stay / we / home", a: "If it rains we will stay home" },
+    // --- PHẦN 10: SẮP XẾP CÂU ĐIỀU KIỆN (Đã sửa từ 'rain' thành 'rains', thêm 'have' vào câu 5) ---
+    { type: 'scramble', q: "Arrange: If / rains / it / will / stay / we / home", a: "If it rains we will stay home" },
     { type: 'scramble', q: "Arrange: had / If / I / time / enough / I / would / travel", a: "If I had enough time I would travel" },
     { type: 'scramble', q: "Arrange: would / you / what / do / were / rich / if / you", a: "What would you do if you were rich" },
     { type: 'scramble', q: "Arrange: wish / I / speak / could / English / well", a: "I wish I could speak English well" },
-    { type: 'scramble', q: "Arrange: had / studied / he / passed / if / would / he", a: "If he had studied he would have passed" },
+    { type: 'scramble', q: "Arrange: had / studied / he / passed / if / would / have / he", a: "If he had studied he would have passed" },
 
     // --- PHẦN 11: MỆNH ĐỀ QUAN HỆ (RELATIVE CLAUSES) ---
     { type: 'mcq', q: "If she _______ earlier, she wouldn't be late now.", options: ["left", "had left", "leaves", "would leave"], a: "had left" },
@@ -712,7 +710,7 @@
     { type: 'scramble', q: "Arrange: too / hot / It / is / to / out / go", a: "It is too hot to go out" },
     { type: 'scramble', q: "Arrange: enough / He / isn't / tall / to / reach / shelf / the", a: "He isn't tall enough to reach the shelf" },
     { type: 'scramble', q: "Arrange: stop / Please / talking / class / in", a: "Please stop talking in class" },
-    
+
     // --- PART: MORE MCQ MIXED (TRẮC NGHIỆM TỔNG HỢP) ---
     { type: 'mcq', q: "______ does it take you to get to school?", options: ["How often", "How far", "How long", "How much"], a: "How long" },
     { type: 'mcq', q: "Would you mind if I ______ here?", options: ["sit", "sat", "sitting", "to sit"], a: "sat" },
@@ -772,7 +770,6 @@
     { type: 'mcq', q: "Antonym of 'Modern': It is a *modern* building.", options: ["new", "ancient", "recent", "good"], a: "ancient" },
 
     // --- PART: PHONETICS (TRỌNG ÂM & PHÁT ÂM) - MCQ ---
-    // (Lưu ý: Game hiển thị text nên chọn dạng bài tìm từ khác biệt)
     { type: 'mcq', q: "Find the word with different stress:", options: ["father", "mother", "teacher", "career"], a: "career" },
     { type: 'mcq', q: "Find the word with different stress:", options: ["decide", "finish", "enjoy", "collect"], a: "finish" },
     { type: 'mcq', q: "Find the word with different stress:", options: ["beautiful", "expensive", "interesting", "colorful"], a: "expensive" },
@@ -815,7 +812,7 @@
     { type: 'error', q: "They (A)enjoy (B)to watch (C)TV (D)in the evening.", parts: ["enjoy", "to watch", "TV", "in the evening"], a: "to watch", full: "They enjoy <u>watching</u> TV in the evening." },
     { type: 'error', q: "This is (A)the (B)first time (C)I (D)met him.", parts: ["the", "first time", "I", "met"], a: "met", full: "This is the first time I <u>have met</u> him." },
     { type: 'error', q: "Unless (A)you (B)don't study, (C)you (D)will fail.", parts: ["Unless", "don't study", "you", "will fail"], a: "don't study", full: "Unless <u>you study</u>, you will fail." },
-    { type: 'error', q: "The man (A)whom (B)you met (C)him (D)yesterday is my uncle.", parts: ["whom", "you met", "him", "yesterday"], a: "him", full: "The man whom you met yesterday is my uncle." }, // Bỏ "him"
+    { type: 'error', q: "The man (A)whom (B)you met (C)him (D)yesterday is my uncle.", parts: ["whom", "you met", "him", "yesterday"], a: "him", full: "The man whom you met yesterday is my uncle." }, 
 
     // --- PART: MIXED GRAMMAR (NGỮ PHÁP TỔNG HỢP) - MCQ ---
     { type: 'mcq', q: "It's time we ______ home.", options: ["go", "went", "have gone", "will go"], a: "went" },
@@ -935,8 +932,7 @@
     { type: 'error', q: "Neither (A)Tom (B)nor (C)his friends (D)is going to the party.", parts: ["Tom", "nor", "his friends", "is"], a: "is", full: "Neither Tom nor his friends <u>are</u> going to the party." },
     { type: 'error', q: "There (A)is (B)a large number of (C)people (D)in the park.", parts: ["is", "a large number of", "people", "in the park"], a: "is", full: "There <u>are</u> a large number of people in the park." },
     { type: 'error', q: "Not only (A)he (B)is handsome (C)but also (D)intelligent.", parts: ["he", "is", "but also", "intelligent"], a: "he", full: "Not only <u>is he</u> handsome but also intelligent." },
-    { type: 'error', q: "I stopped (A)to buy (B)a newspaper (C)and (D)read it.", parts: ["to buy", "a newspaper", "and", "read"], a: "read", full: "I stopped to buy a newspaper and <u>to read</u> it (hoặc bought... and read)." }, 
-    // *Lưu ý: Câu trên sửa chính xác phụ thuộc ngữ cảnh, nhưng lỗi song hành thường gặp.*
+    { type: 'error', q: "I stopped (A)to buy (B)a newspaper (C)and (D)read it.", parts: ["to buy", "a newspaper", "and", "read"], a: "read", full: "I stopped to buy a newspaper and <u>to read</u> it." },
     { type: 'error', q: "The (A)novel (B)writing (C)by Mark Twain (D)is famous.", parts: ["novel", "writing", "by", "is"], a: "writing", full: "The novel <u>written</u> by Mark Twain is famous." },
     { type: 'error', q: "We (A)are (B)looking forward (C)to (D)hear from you.", parts: ["are", "looking forward", "to", "hear"], a: "hear", full: "We are looking forward to <u>hearing</u> from you." },
     { type: 'error', q: "If I (A)had known (B)you were coming, I (C)would pick (D)you up.", parts: ["had known", "you were coming", "would pick", "you up"], a: "would pick", full: "If I had known you were coming, I <u>would have picked</u> you up." },
@@ -983,8 +979,8 @@
     { type: 'mcq', q: "Don't touch that, _______?", options: ["will you", "do you", "don't you", "are you"], a: "will you" },
     { type: 'mcq', q: "I am late, _______?", options: ["aren't I", "am I not", "am not I", "don't I"], a: "aren't I" },
     { type: 'mcq', q: "Nobody is here, _______?", options: ["are they", "is he", "isn't he", "aren't they"], a: "are they" },
-    { type: 'mcq', q: "He went to _______ prison to visit his brother.", options: ["the", "a", "an", "x"], a: "the" }, // Đến thăm (địa điểm cụ thể) -> the
-    { type: 'mcq', q: "He went to _______ prison for stealing cars.", options: ["x", "the", "a", "an"], a: "x" }, // Đi tù (mục đích chính) -> no article
+    { type: 'mcq', q: "He went to _______ prison to visit his brother.", options: ["the", "a", "an", "x"], a: "the" },
+    { type: 'mcq', q: "He went to _______ prison for stealing cars.", options: ["x", "the", "a", "an"], a: "x" },
     { type: 'mcq', q: "She plays _______ violin very well.", options: ["the", "a", "an", "x"], a: "the" },
     { type: 'mcq', q: "I usually have _______ breakfast at 7 a.m.", options: ["x", "the", "a", "an"], a: "x" },
     { type: 'mcq', q: "_______ poor need our help.", options: ["The", "A", "An", "x"], a: "The" },
@@ -1072,7 +1068,6 @@
     { type: 'mcq', q: "Smoking is _______ to your health.", options: ["harm", "harmful", "harmless", "harmfully"], a: "harmful" },
     { type: 'mcq', q: "He drives _______.", options: ["care", "careful", "carelessly", "careless"], a: "carelessly" },
     { type: 'mcq', q: "The _______ of the internet changed the world.", options: ["invent", "invention", "inventor", "inventive"], a: "invention" },
-    { type: 'mcq', q: "She is a famous _______.", options: ["act", "actor", "action", "acting"], a: "actress" }, // *Sửa option để đúng ngữ cảnh 'she'* -> nhưng trong code cũ chỉ có mcq, mình sẽ dùng options chuẩn:
     { type: 'mcq', q: "She is a famous _______.", options: ["act", "actress", "action", "acting"], a: "actress" },
     { type: 'mcq', q: "Music is a source of _______.", options: ["entertain", "entertainment", "entertaining", "entertainer"], a: "entertainment" },
     { type: 'mcq', q: "He has a good _______ of history.", options: ["know", "knowledge", "known", "knowing"], a: "knowledge" },
@@ -1094,7 +1089,7 @@
     { type: 'scramble', q: "Arrange: prevented / The / rain / heavy / us / from / playing", a: "The heavy rain prevented us from playing" },
     { type: 'scramble', q: "Arrange: thanked / He / me / for / him / helping", a: "He thanked me for helping him" },
     { type: 'scramble', q: "Arrange: congratulate / I / you / on / passing / exam / the", a: "I congratulate you on passing the exam" },
-    { type: 'scramble', q: "Arrange: insited / She / on / for / paying / dinner / the", a: "She insisted on paying for the dinner" },
+    { type: 'scramble', q: "Arrange: insisted / She / on / for / paying / dinner / the", a: "She insisted on paying for the dinner" },
     { type: 'scramble', q: "Arrange: object / Do / you / to / smoking / here / ?", a: "Do you object to smoking here ?" },
     { type: 'scramble', q: "Arrange: looking / I / am / forward / seeing / to / again / you", a: "I am looking forward to seeing you again" },
     { type: 'scramble', q: "Arrange: used / He / is / to / driving / left / on / the", a: "He is used to driving on the left" },
@@ -1234,10 +1229,10 @@
 
     // --- PHẦN 54: MIXED GRAMMAR (NGỮ PHÁP TỔNG HỢP) ---
     { type: 'mcq', q: "I haven't seen him _______ ages.", options: ["for", "since", "in", "during"], a: "for" },
-    { type: 'mcq', q: "We arrived _______ London at 6 p.m.", options: ["in", "at", "to", "on"], a: "in" }, // Arrive in (city/country)
-    { type: 'mcq', q: "We arrived _______ the airport early.", options: ["at", "in", "to", "on"], a: "at" }, // Arrive at (small place)
+    { type: 'mcq', q: "We arrived _______ London at 6 p.m.", options: ["in", "at", "to", "on"], a: "in" }, 
+    { type: 'mcq', q: "We arrived _______ the airport early.", options: ["at", "in", "to", "on"], a: "at" }, 
     { type: 'mcq', q: "He is _______ teacher I told you about.", options: ["the", "a", "an", "x"], a: "the" },
-    { type: 'mcq', q: "She went _______ home.", options: ["x", "to", "at", "in"], a: "x" }, // Go home (no preposition)
+    { type: 'mcq', q: "She went _______ home.", options: ["x", "to", "at", "in"], a: "x" },
     { type: 'mcq', q: "Look _______ ! There's a car coming.", options: ["out", "up", "after", "for"], a: "out" },
     { type: 'mcq', q: "I am fed _______ with this food.", options: ["up", "out", "in", "on"], a: "up" },
     { type: 'mcq', q: "It depends _______ the weather.", options: ["on", "in", "at", "to"], a: "on" },
@@ -1254,7 +1249,7 @@
     { type: 'scramble', q: "Arrange: should / You / brush / teeth / your / day / every", a: "You should brush your teeth every day" },
     { type: 'scramble', q: "Arrange: can / He / speak / languages / three", a: "He can speak three languages" },
     { type: 'scramble', q: "Arrange: will / I / call / you / tomorrow", a: "I will call you tomorrow" },
-    { type: 'scramble', q: "Arrange: finished / Have / you / homework / your / yet / ?", a: "Have you finished your homework yet ?" }
+    { type: 'scramble', q: "Arrange: finished / Have / you / homework / your / yet / ?", a: "Have you finished your homework yet ?" } 
 ];
 
         // --- GAME VARIABLES ---
