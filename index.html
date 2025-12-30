@@ -1075,47 +1075,104 @@
     let score = 0; let qIndex = 0; let gameQuestions = [];
     let timer; let timeLeft = 1500;
 
-    // --- HÀM QUAN TRỌNG: HIỂN THỊ CÂU HỎI ---
     function loadQ() {
         const q = gameQuestions[qIndex];
-        document.getElementById('q-count').innerText = `Câu: ${qIndex+1}/20`;
+        document.getElementById('q-count').innerText = `Câu: ${qIndex + 1}/20`;
         const area = document.getElementById('options-area');
         const qText = document.getElementById('question-text');
         
-        area.innerHTML = ""; // Xóa các nút bấm cũ
+        area.innerHTML = ""; // Xóa nội dung cũ
         
-        // 1. Sửa lỗi nội dung hiển thị (Xóa các chữ thừa trong đề bài)
+        // 1. Xử lý nội dung hiển thị câu hỏi
         qText.innerText = q.q.replace("Arrange: ", "").replace("Rewrite: ", "");
 
-        // 2. GIẢI PHÁP CHO LỖI q.o vs q.options:
-        // Lệnh này nói rằng: "Lấy cái nào cũng được, miễn là có dữ liệu đáp án"
-        let currentOptions = q.options || q.o || [];
+        // 2. Kiểm tra danh sách đáp án (o hoặc options)
+        let listOptions = q.options || q.o || [];
 
-        // 3. Phân loại cách hiển thị
-        if (q.type === 'mcq' || q.type === 'error' || !q.type) {
-            // Hiển thị các nút bấm trắc nghiệm
-            currentOptions.forEach(opt => {
+        // 3. Logic hiển thị
+        if (q.type === 'mcq' || q.type === 'error' || (!q.type && listOptions.length > 0)) {
+            // Dạng TRẮC NGHIỆM: Vẫn giữ nút bấm cho nhanh
+            listOptions.forEach(opt => {
                 const btn = document.createElement('div');
                 btn.className = 'option-card';
                 btn.innerText = opt;
                 btn.onclick = () => checkAns(opt, q.a);
                 area.appendChild(btn);
             });
-        } else if (q.type === 'scramble') {
-            // Hiển thị nút bấm đặc biệt cho câu ghép từ
-            const btn = document.createElement('div');
-            btn.className = 'option-card';
-            btn.style.gridColumn = "1 / span 2";
-            btn.innerText = "Bấm vào đây để nhập câu trả lời của bạn";
-            btn.onclick = () => {
-                let userPrompt = prompt("Hãy sắp xếp lại câu này cho đúng:");
-                if(userPrompt) checkAns(userPrompt.trim(), q.a);
+        } else {
+            // Dạng NHẬP LIỆU (cho scramble hoặc các câu không có mảng options)
+            // Tạo một container chứa ô nhập và nút gửi
+            const inputContainer = document.createElement('div');
+            inputContainer.style.gridColumn = "1 / span 2";
+            inputContainer.style.display = "flex";
+            inputContainer.style.flexDirection = "column";
+            inputContainer.style.gap = "10px";
+
+            const inputField = document.createElement('input');
+            inputField.type = "text";
+            inputField.id = "user-answer-input";
+            inputField.placeholder = "Gõ câu trả lời của bạn vào đây...";
+            inputField.style.width = "100%";
+            inputField.style.margin = "0";
+            inputField.autocomplete = "off";
+
+            const submitBtn = document.createElement('button');
+            submitBtn.className = 'btn';
+            submitBtn.innerText = "NỘP CÂU TRẢ LỜI";
+            submitBtn.style.margin = "10px auto";
+            submitBtn.onclick = () => {
+                const val = document.getElementById('user-answer-input').value;
+                if(val.trim() === "") {
+                    alert("Bạn chưa nhập gì cả!");
+                    return;
+                }
+                checkAns(val, q.a);
             };
-            area.appendChild(btn);
+
+            // Cho phép nhấn Enter để nộp bài
+            inputField.onkeyup = (e) => {
+                if (e.key === "Enter") submitBtn.click();
+            };
+
+            inputContainer.appendChild(inputField);
+            inputContainer.appendChild(submitBtn);
+            area.appendChild(inputContainer);
+            
+            // Tự động nhảy con trỏ vào ô nhập
+            setTimeout(() => inputField.focus(), 100);
         }
     }
 
-    // --- HÀM KIỂM TRA ĐÁP ÁN (Đã sửa để không bắt bẻ hoa thường) ---
+    // --- HÀM KIỂM TRA ĐÁP ÁN (ĐÃ TỐI ƯU) ---
+    function checkAns(u, a) {
+        const fb = document.getElementById('feedback');
+        
+        // Chuẩn hóa: viết thường, xóa khoảng trắng thừa ở đầu/cuối và giữa các từ
+        const userClean = u.toLowerCase().trim().replace(/\s+/g, ' ');
+        const correctClean = a.toLowerCase().trim().replace(/\s+/g, ' ');
+
+        if (userClean === correctClean) {
+            score += 10;
+            document.getElementById('score-display').innerText = score;
+            fb.innerText = "CHÍNH XÁC! +10đ";
+            fb.style.color = "#2ed573";
+            addLog(`Đúng câu ${qIndex + 1}`);
+        } else {
+            fb.innerHTML = `SAI RỒI! <br> Đáp án đúng: <span style="color:#fff; border-bottom: 1px dashed">${a}</span>`;
+            fb.style.color = "#ff4757";
+            addLog(`Sai câu ${qIndex + 1}`);
+        }
+
+        // Khóa giao diện để tránh bấm/nộp nhiều lần
+        document.getElementById('options-area').style.pointerEvents = "none";
+
+        setTimeout(() => {
+            fb.innerText = "";
+            document.getElementById('options-area').style.pointerEvents = "auto";
+            qIndex++;
+            if (qIndex < 20) loadQ(); else endGame();
+        }, 2500);
+    }
     function checkAns(userAns, correctAns) {
         const fb = document.getElementById('feedback');
         
