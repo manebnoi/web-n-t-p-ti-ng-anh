@@ -1071,111 +1071,144 @@
         }
 
         let logs = JSON.parse(localStorage.getItem('cyberLogs')) || [];
-        let currentUser = {name: "", class: ""};
-        let score = 0; let qIndex = 0; let gameQuestions = [];
-        let timer; let timeLeft = 1500;
+    let currentUser = {name: "", class: ""};
+    let score = 0; let qIndex = 0; let gameQuestions = [];
+    let timer; let timeLeft = 1500;
 
-        // --- ADMIN FUNCTIONS ---
-        function accessAdmin() {
-            if(document.getElementById('admin-pass').value === "123456") {
-                switchScreen('admin-dashboard-screen');
-                renderAdmin();
-            } else alert("Mật khẩu Admin không đúng!");
-        }
+    // --- HÀM QUAN TRỌNG: HIỂN THỊ CÂU HỎI ---
+    function loadQ() {
+        const q = gameQuestions[qIndex];
+        document.getElementById('q-count').innerText = `Câu: ${qIndex+1}/20`;
+        const area = document.getElementById('options-area');
+        const qText = document.getElementById('question-text');
+        
+        area.innerHTML = ""; // Xóa các nút bấm cũ
+        
+        // 1. Sửa lỗi nội dung hiển thị (Xóa các chữ thừa trong đề bài)
+        qText.innerText = q.q.replace("Arrange: ", "").replace("Rewrite: ", "");
 
-        function renderAdmin() {
-            const tbody = document.querySelector('#log-table tbody');
-            tbody.innerHTML = logs.slice().reverse().map(l => `<tr><td>${l.u}</td><td style="color:${l.act.includes('Đúng')?'#2ed573':'#ff4757'}">${l.act}</td><td>${l.t}</td></tr>`).join('');
-            
-            const users = new Set(logs.map(l => l.u)).size;
-            document.getElementById('st-users').innerText = users;
-            const correct = logs.filter(l => l.act.includes('Đúng')).length;
-            const total = logs.filter(l => l.act.includes('Đúng') || l.act.includes('Sai')).length;
-            document.getElementById('st-acc').innerText = total > 0 ? Math.round(correct/total*100) + "%" : "0%";
-            document.getElementById('st-avg').innerText = (correct*10 / (users || 1)).toFixed(1);
-        }
+        // 2. GIẢI PHÁP CHO LỖI q.o vs q.options:
+        // Lệnh này nói rằng: "Lấy cái nào cũng được, miễn là có dữ liệu đáp án"
+        let currentOptions = q.options || q.o || [];
 
-        function addLog(act) {
-            logs.push({u: currentUser.name, act: act, t: new Date().toLocaleTimeString()});
-            localStorage.setItem('cyberLogs', JSON.stringify(logs));
-        }
-
-        function resetLogs() { if(confirm("Xác nhận xóa sạch nhật ký hệ thống?")) { localStorage.removeItem('cyberLogs'); logs = []; renderAdmin(); }}
-
-        // --- GAMEPLAY FUNCTIONS ---
-        function switchScreen(id) { 
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); 
-            document.getElementById(id).classList.add('active'); 
-        }
-
-        function userLogin() {
-            const n = document.getElementById('username').value.trim();
-            const c = document.getElementById('userclass').value.trim();
-            if(n && c) {
-                currentUser = {name: n, class: c};
-                addLog("Đăng nhập làm bài");
-                aiSpeak(`Hệ thống bốc ngẫu nhiên câu hỏi cho ${n}. Chúc may mắn!`);
-                startGame();
-            } else alert("Hãy nhập đầy đủ Họ tên và Lớp!");
-        }
-
-        function startGame() {
-            switchScreen('game-screen');
-            // Bốc ngẫu nhiên 20 câu từ questionBank
-            gameQuestions = questionBank.sort(() => 0.5 - Math.random()).slice(0, 20);
-            loadQ();
-            timer = setInterval(() => {
-                timeLeft--;
-                let m = Math.floor(timeLeft/60); let s = timeLeft%60;
-                document.getElementById('time-display').innerText = `${m}:${s<10?'0'+s:s}`;
-                if(timeLeft <= 0) endGame();
-            }, 1000);
-        }
-
-        function loadQ() {
-            const q = gameQuestions[qIndex];
-            document.getElementById('q-count').innerText = `Q: ${qIndex+1}/20`;
-            document.getElementById('question-text').innerText = q.q;
-            const area = document.getElementById('options-area');
-            area.innerHTML = "";
-            q.o.forEach(opt => {
+        // 3. Phân loại cách hiển thị
+        if (q.type === 'mcq' || q.type === 'error' || !q.type) {
+            // Hiển thị các nút bấm trắc nghiệm
+            currentOptions.forEach(opt => {
                 const btn = document.createElement('div');
                 btn.className = 'option-card';
                 btn.innerText = opt;
                 btn.onclick = () => checkAns(opt, q.a);
                 area.appendChild(btn);
             });
+        } else if (q.type === 'scramble') {
+            // Hiển thị nút bấm đặc biệt cho câu ghép từ
+            const btn = document.createElement('div');
+            btn.className = 'option-card';
+            btn.style.gridColumn = "1 / span 2";
+            btn.innerText = "Bấm vào đây để nhập câu trả lời của bạn";
+            btn.onclick = () => {
+                let userPrompt = prompt("Hãy sắp xếp lại câu này cho đúng:");
+                if(userPrompt) checkAns(userPrompt.trim(), q.a);
+            };
+            area.appendChild(btn);
         }
+    }
 
-        function checkAns(u, a) {
-            const fb = document.getElementById('feedback');
-            if(u === a) {
-                score += 10; fb.innerText = "CHÍNH XÁC!"; fb.style.color = "#2ed573";
-                addLog(`Đúng câu ${qIndex+1}`);
-                aiSpeak("Rất tốt! Bạn làm đúng rồi.");
-            } else {
-                fb.innerText = "SAI RỒI!"; fb.style.color = "#ff4757";
-                addLog(`Sai câu ${qIndex+1}`);
-                aiSpeak("Tiếc quá, hãy cẩn thận hơn ở câu sau.");
-            }
-            setTimeout(() => {
-                fb.innerText = "";
-                qIndex++;
-                if(qIndex < 20) loadQ(); else endGame();
-            }, 1000);
+    // --- HÀM KIỂM TRA ĐÁP ÁN (Đã sửa để không bắt bẻ hoa thường) ---
+    function checkAns(userAns, correctAns) {
+        const fb = document.getElementById('feedback');
+        
+        // So sánh: viết hoa hay thường, thừa dấu cách đều được chấp nhận
+        if(userAns.toLowerCase().trim() === correctAns.toLowerCase().trim()) {
+            score += 10;
+            document.getElementById('score-display').innerText = score;
+            fb.innerText = "CHÍNH XÁC! +10đ";
+            fb.style.color = "#2ed573";
+            addLog(`Đúng câu ${qIndex+1}`);
+        } else {
+            fb.innerHTML = `SAI RỒI! <br> Đáp án đúng: <span style="color:#fff">${correctAns}</span>`;
+            fb.style.color = "#ff4757";
+            addLog(`Sai câu ${qIndex+1}`);
         }
+        
+        // Khóa không cho bấm lung tung khi đang hiện thông báo
+        document.getElementById('options-area').style.pointerEvents = "none";
 
-        function endGame() {
-            clearInterval(timer);
-            switchScreen('result-screen');
-            document.getElementById('final-score').innerText = score;
-            addLog(`Kết thúc - Tổng điểm: ${score}`);
-        }
+        setTimeout(() => {
+            fb.innerText = "";
+            document.getElementById('options-area').style.pointerEvents = "auto";
+            qIndex++;
+            if(qIndex < 20) loadQ(); else endGame();
+        }, 2500); // Đợi 2.5 giây để học sinh kịp đọc đáp án đúng nếu làm sai
+    }
 
-        function aiSpeak(txt) {
-            document.getElementById('ai-bot').style.display = 'block';
-            document.getElementById('ai-content').innerText = txt;
-        }
-    </script>
+    // --- CÁC HÀM CÒN LẠI (GIỮ NGUYÊN) ---
+    function startGame() {
+        switchScreen('game-screen');
+        qIndex = 0; score = 0; timeLeft = 1500;
+        document.getElementById('score-display').innerText = score;
+        gameQuestions = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, 20);
+        loadQ();
+        if(timer) clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--;
+            let m = Math.floor(timeLeft/60); let s = timeLeft%60;
+            document.getElementById('time-display').innerText = `${m}:${s<10?'0'+s:s}`;
+            if(timeLeft <= 0) endGame();
+        }, 1000);
+    }
+
+    function userLogin() {
+        const n = document.getElementById('username').value.trim();
+        const c = document.getElementById('userclass').value.trim();
+        if(n && c) {
+            currentUser = {name: n, class: c};
+            addLog("Đăng nhập");
+            startGame();
+        } else alert("Vui lòng nhập tên và lớp!");
+    }
+
+    function switchScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function accessAdmin() {
+        if(document.getElementById('admin-pass').value === "123456") {
+            switchScreen('admin-dashboard-screen');
+            renderAdmin();
+        } else alert("Mật khẩu sai!");
+    }
+
+    function renderAdmin() {
+        const tbody = document.querySelector('#log-table tbody');
+        tbody.innerHTML = logs.slice().reverse().map(l => `<tr><td>${l.u}</td><td style="color:${l.act.includes('Đúng')?'#2ed573':'#ff4757'}">${l.act}</td><td>${l.t}</td></tr>`).join('');
+        const users = new Set(logs.map(l => l.u)).size;
+        document.getElementById('st-users').innerText = users;
+        const correct = logs.filter(l => l.act.includes('Đúng')).length;
+        const total = logs.filter(l => l.act.includes('Đúng') || l.act.includes('Sai')).length;
+        document.getElementById('st-acc').innerText = total > 0 ? Math.round(correct/total*100) + "%" : "0%";
+        document.getElementById('st-avg').innerText = (correct*10 / (users || 1)).toFixed(1);
+    }
+
+    function addLog(act) {
+        logs.push({u: currentUser.name, act: act, t: new Date().toLocaleTimeString()});
+        localStorage.setItem('cyberLogs', JSON.stringify(logs));
+    }
+
+    function resetLogs() { if(confirm("Xóa sạch dữ liệu?")) { localStorage.removeItem('cyberLogs'); logs = []; renderAdmin(); }}
+
+    function endGame() {
+        clearInterval(timer);
+        switchScreen('result-screen');
+        document.getElementById('final-score').innerText = score;
+    }
+
+    function aiSpeak(txt) {
+        document.getElementById('ai-bot').style.display = 'block';
+        document.getElementById('ai-content').innerText = txt;
+    }
+</script>
 </body>
 </html>
